@@ -13,7 +13,7 @@ const Label = styled.div`
   font-family: sans-serif;
   background-color: ${({ theme }) => theme.global.colors.transparentGray};
   color: white;
-  margin-top: 5px;
+  margin-top: 4px;
 `;
 
 export const GrayLabel = ({ children }: Props) => <Label>{children}</Label>;

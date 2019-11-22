@@ -13,6 +13,7 @@ import {
   Spacer
 } from "./flowDiagram/Nodes/Gateway/GatewayNode";
 import { themeDecorator } from "./themeDecorator";
+import { FolderPort, Folder } from "./fileSys/Nodes/Folder/Folder";
 
 storiesOf("Flow diagram", module)
   .addDecorator(themeDecorator)
@@ -67,6 +68,21 @@ storiesOf("Flow diagram", module)
         <GatewayPort />
         <GatewayPort />
       </GatewayNode>
+    ),
+    {
+      info: { inline: true }
+    }
+  );
+
+storiesOf("File system", module)
+  .addDecorator(themeDecorator)
+  .add(
+    "Folder",
+    () => (
+      <Folder model={{ name: "/", color: "blue", isSelected: () => false }}>
+        <FolderPort />
+        <FolderPort />
+      </Folder>
     ),
     {
       info: { inline: true }

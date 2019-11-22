@@ -77,8 +77,8 @@ export const Diagram: React.FC = () => {
         }}
         onDragOver={event => event.preventDefault()}
       >
-        <CanvasWidget engine={engine} className="diagram" />
         <DetailsOverlay />
+        <CanvasWidget engine={engine} className="diagram" />
       </Container>
     </ThemeProvider>
   );
