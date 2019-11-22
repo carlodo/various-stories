@@ -1,18 +1,15 @@
 import { NodeModel, DefaultPortModel } from "@projectstorm/react-diagrams";
 import { BaseModelOptions } from "@projectstorm/react-canvas-core";
 
-export interface ModelOptions extends BaseModelOptions {
+export interface FileModelOptions extends BaseModelOptions {
   name: string;
 }
 
-export class FolderModel extends NodeModel {
+export class FileModel extends NodeModel {
   name: string;
 
-  constructor(options: ModelOptions) {
-    super({
-      ...options,
-      type: "activity-node"
-    });
+  constructor(options: FileModelOptions) {
+    super({ ...options, type: "event-node" });
     this.name = options.name;
     this.width = 100;
     this.height = 100;

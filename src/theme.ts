@@ -18,7 +18,9 @@ export const theme = {
       yellow: "ffff00",
       yellowTransparent: "#ffff0099",
       folder: "#6fc9ff",
-      folderBack: "#50a0d0"
+      folderBack: "#50a0d0",
+      file: "#fff56f",
+      fileBack: "#dcd35e"
     },
     table: {
       footer: {

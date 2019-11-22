@@ -7,25 +7,24 @@ export interface Model {
   isSelected: () => boolean;
 }
 
-export interface FolderProps {
+export interface Props {
   model: Model;
   children?: React.ReactNode;
 }
-
-export interface FolderPortProps {}
 
 const Body = styled.div<{ selected: boolean }>`
   border: solid 2px
     ${({ selected, theme }) =>
       selected ? theme.global.colors.redOrange : theme.global.colors.gray};
-  border-radius: 0px 5px 5px 5px;
-  width: 80px;
-  height: 60px;
+  border-top: none;
+  border-radius: 0px 0px 5px 5px;
+  width: 40px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: relative;
-  background-color: ${({ theme }) => theme.global.colors.folder};
+  background-color: ${({ theme }) => theme.global.colors.file};
   pointer-events: all;
   cursor: crosshair;
 `;
@@ -33,7 +32,7 @@ const Body = styled.div<{ selected: boolean }>`
 const Port = styled.div`
   width: 12px;
   height: 12px;
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: ${({ theme }) => theme.global.colors.lightGray};
   cursor: pointer;
   :hover {
@@ -50,33 +49,55 @@ const Container = styled.div`
 
 const Trap = styled.div`
   position: relative;
-  right: 27px;
-  top: -112px;
-  height: 0;
-  width: 14px;
-  border-bottom: 12px solid ${({ theme }) => theme.global.colors.folderBack};
+  right: 0px;
+  top: -98px;
+  width: 28px;
+  border-radius: 5px 0px 0px 0px;
+  border-bottom: 12px solid ${({ theme }) => theme.global.colors.file};
   border-left: 0px solid transparent;
   border-right: 12px solid transparent;
 `;
 
 const TrapBorder = styled.div`
   position: relative;
-  right: 27px;
-  top: -100px;
-  height: 0;
-  width: 16px;
+  right: 0px;
+  top: -86px;
+  width: 30px;
+  border-radius: 5px 0px 0px 0px;
   border-bottom: 14px solid ${({ theme }) => theme.global.colors.gray};
   border-left: 0px solid transparent;
   border-right: 14px solid transparent;
 `;
 
-export const FolderPort = (_props: FolderPortProps) => <Port />;
+const TrapEar = styled.div`
+  position: relative;
+  right: -14px;
+  top: -124px;
+  width: 0px;
+  border-bottom: 12px solid ${({ theme }) => theme.global.colors.fileBack};
+  border-left: 0px solid transparent;
+  border-right: 12px solid transparent;
+`;
 
-export const Folder = ({ model, children }: FolderProps) => (
+const TrapEarBorder = styled.div`
+  position: relative;
+  right: -14px;
+  top: -111px;
+  width: 0px;
+  border-bottom: 14px solid ${({ theme }) => theme.global.colors.gray};
+  border-left: 0px solid transparent;
+  border-right: 14px solid transparent;
+`;
+
+export const FilePort = () => <Port />;
+
+export const File = ({ children, model }: Props) => (
   <Container>
     <Body selected={model.isSelected()}>{children}</Body>
     <NodeLabel>{model.name}</NodeLabel>
     <TrapBorder />
     <Trap />
+    <TrapEarBorder />
+    <TrapEar />
   </Container>
 );

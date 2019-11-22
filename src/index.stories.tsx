@@ -14,6 +14,7 @@ import {
 } from "./flowDiagram/Nodes/Gateway/GatewayNode";
 import { themeDecorator } from "./themeDecorator";
 import { FolderPort, Folder } from "./fileSys/Nodes/Folder/Folder";
+import { FilePort, File } from "./fileSys/Nodes/File/File";
 
 storiesOf("Flow diagram", module)
   .addDecorator(themeDecorator)
@@ -30,7 +31,6 @@ storiesOf("Flow diagram", module)
           isSelected: () => false
         }}
       >
-        <ActivityNodePort />
         <ActivityNodePort />
       </ActivityNode>
     ),
@@ -78,13 +78,11 @@ storiesOf("File system", module)
   .addDecorator(themeDecorator)
   .add(
     "Folder",
-    () => (
-      <Folder model={{ name: "/", color: "blue", isSelected: () => false }}>
-        <FolderPort />
-        <FolderPort />
-      </Folder>
-    ),
-    {
-      info: { inline: true }
-    }
+    () => <Folder model={{ name: "/", isSelected: () => false }} />,
+    { info: { inline: true } }
+  )
+  .add(
+    "File",
+    () => <File model={{ name: "passwd", isSelected: () => false }} />,
+    { info: { inline: true } }
   );

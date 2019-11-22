@@ -1,39 +1,38 @@
 import * as React from "react";
-import { FolderModel } from "./FolderModel";
-import { Folder, FolderPort } from "./Folder";
+import { FileModel } from "./FileModel";
+import { PortWidget, DiagramEngine } from "@projectstorm/react-diagrams-core";
+import { File, FilePort } from "./File";
 import { AbstractReactFactory } from "@projectstorm/react-canvas-core";
-import { DiagramEngine, PortWidget } from "@projectstorm/react-diagrams-core";
 import { DefaultPortModel } from "@projectstorm/react-diagrams";
 
-export class FolderFactory extends AbstractReactFactory<
-  FolderModel,
+export class EventNodeFactory extends AbstractReactFactory<
+  FileModel,
   DiagramEngine
 > {
   constructor() {
-    super("activity-node");
+    super("event-node");
   }
 
-  generateModel(initialConfig) {
-    return new FolderModel({ name: "/" });
+  generateModel(event: any) {
+    return new FileModel({ name: event.name });
   }
 
   generateReactWidget(event: any): JSX.Element {
-    const engine = this.engine;
     return (
-      <Folder model={event.model}>
+      <File model={event.model}>
         <PortWidget
-          engine={engine}
+          engine={this.engine}
           port={event.model.getPort("in") || new DefaultPortModel(true)}
         >
-          <FolderPort />
+          <FilePort />
         </PortWidget>
         <PortWidget
-          engine={engine}
+          engine={this.engine}
           port={event.model.getPort("out") || new DefaultPortModel(false)}
         >
-          <FolderPort />
+          <FilePort />
         </PortWidget>
-      </Folder>
+      </File>
     );
   }
 }
