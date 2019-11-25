@@ -93,11 +93,16 @@ export const FilePort = () => <Port />;
 
 export const File = ({ children, model }: Props) => (
   <Container>
-    <Body selected={model.isSelected()}>{children}</Body>
+    <svg width="60" height="80">
+      <rect
+        id="svg_1"
+        height="80"
+        width="60"
+        stroke-width="5"
+        stroke="#000000"
+        fill="#ffffaa"
+      />
+    </svg>
     <NodeLabel>{model.name}</NodeLabel>
-    <TrapBorder />
-    <Trap />
-    <TrapEarBorder />
-    <TrapEar />
   </Container>
 );

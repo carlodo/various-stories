@@ -13,8 +13,9 @@ import {
   Spacer
 } from "./flowDiagram/Nodes/Gateway/GatewayNode";
 import { themeDecorator } from "./themeDecorator";
-import { FolderPort, Folder } from "./fileSys/Nodes/Folder/Folder";
-import { FilePort, File } from "./fileSys/Nodes/File/File";
+import { Folder } from "./fileSys/Nodes/Folder/Folder";
+import { File } from "./fileSys/Nodes/File/File";
+import { Diagram as FileDiagram } from "./fileSys/Diagram";
 
 storiesOf("Flow diagram", module)
   .addDecorator(themeDecorator)
@@ -85,4 +86,5 @@ storiesOf("File system", module)
     "File",
     () => <File model={{ name: "passwd", isSelected: () => false }} />,
     { info: { inline: true } }
-  );
+  )
+  .add("Diagram", () => <FileDiagram />, { info: { inline: true } });

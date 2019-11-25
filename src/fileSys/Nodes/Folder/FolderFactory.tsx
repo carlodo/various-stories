@@ -19,21 +19,6 @@ export class FolderFactory extends AbstractReactFactory<
 
   generateReactWidget(event: any): JSX.Element {
     const engine = this.engine;
-    return (
-      <Folder model={event.model}>
-        <PortWidget
-          engine={engine}
-          port={event.model.getPort("in") || new DefaultPortModel(true)}
-        >
-          <FolderPort />
-        </PortWidget>
-        <PortWidget
-          engine={engine}
-          port={event.model.getPort("out") || new DefaultPortModel(false)}
-        >
-          <FolderPort />
-        </PortWidget>
-      </Folder>
-    );
+    return <Folder model={event.model} />;
   }
 }

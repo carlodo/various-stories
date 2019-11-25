@@ -4,7 +4,6 @@ import { NodeLabel } from "../NodeLabel";
 
 export interface Model {
   name: string;
-  isSelected: () => boolean;
 }
 
 export interface FolderProps {
@@ -14,10 +13,8 @@ export interface FolderProps {
 
 export interface FolderPortProps {}
 
-const Body = styled.div<{ selected: boolean }>`
-  border: solid 2px
-    ${({ selected, theme }) =>
-      selected ? theme.global.colors.redOrange : theme.global.colors.gray};
+const Body = styled.div`
+  border: solid 2px ${({ theme }) => theme.global.colors.gray};
   border-radius: 0px 5px 5px 5px;
   width: 80px;
   height: 60px;
@@ -74,9 +71,16 @@ export const FolderPort = (_props: FolderPortProps) => <Port />;
 
 export const Folder = ({ model, children }: FolderProps) => (
   <Container>
-    <Body selected={model.isSelected()}>{children}</Body>
+    <svg width="90" height="60">
+      <rect
+        id="svg_1"
+        height="60"
+        width="90"
+        stroke-width="5"
+        stroke="#000000"
+        fill="#aad4ff"
+      />
+    </svg>
     <NodeLabel>{model.name}</NodeLabel>
-    <TrapBorder />
-    <Trap />
   </Container>
 );

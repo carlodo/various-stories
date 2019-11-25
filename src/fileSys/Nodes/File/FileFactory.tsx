@@ -5,7 +5,7 @@ import { File, FilePort } from "./File";
 import { AbstractReactFactory } from "@projectstorm/react-canvas-core";
 import { DefaultPortModel } from "@projectstorm/react-diagrams";
 
-export class EventNodeFactory extends AbstractReactFactory<
+export class FileFactory extends AbstractReactFactory<
   FileModel,
   DiagramEngine
 > {
@@ -18,21 +18,6 @@ export class EventNodeFactory extends AbstractReactFactory<
   }
 
   generateReactWidget(event: any): JSX.Element {
-    return (
-      <File model={event.model}>
-        <PortWidget
-          engine={this.engine}
-          port={event.model.getPort("in") || new DefaultPortModel(true)}
-        >
-          <FilePort />
-        </PortWidget>
-        <PortWidget
-          engine={this.engine}
-          port={event.model.getPort("out") || new DefaultPortModel(false)}
-        >
-          <FilePort />
-        </PortWidget>
-      </File>
-    );
+    return <File model={event.model} />;
   }
 }
