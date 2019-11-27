@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-export interface Props {}
+export interface Props {
+  execute: (command: string) => void;
+}
 
 const Container = styled.div`
   display: flex;
-  flex: 1;
   flex-direction: column-reverse;
   background-color: gray;
-  min-width: 300px;
-  height: 100vh;
+  height: inherit;
   border-radius: 5px;
   font-family: "Anonymous Pro", monospace;
 `;
@@ -40,7 +40,7 @@ const Dollar = styled.p`
   padding: 0 5px;
 `;
 
-export const Terminal = ({}: Props) => {
+export const Terminal = ({ execute }: Props) => {
   const [value, setValue] = useState("");
 
   useEffect(() => {
@@ -51,7 +51,8 @@ export const Terminal = ({}: Props) => {
     const handler = (e: KeyboardEvent) => {
       e.preventDefault();
       if (e.keyCode === 13) {
-        console.log(value);
+        // const output = execute(value); Add output to history component
+        execute(value);
         setValue("");
       } else {
         setValue(val => val + String.fromCharCode(e.charCode));

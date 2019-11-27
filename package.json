@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@projectstorm/react-diagrams": "^6.0.1-beta.5",
+    "@types/dagre": "^0.7.42",
     "closest": "^0.0.1",
     "dagre": "^0.8.4",
     "mathjs": "^6.2.5",
@@ -18,13 +19,15 @@
     "paths-js": "^0.4.10",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "styled-components": "^4.4.1"
+    "styled-components": "^4.4.1",
+    "yargs-parser": "^16.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.7.2",
     "@storybook/addon-info": "^5.2.6",
     "@storybook/react": "^5.2.6",
     "@types/styled-components": "^4.4.0",
+    "@types/yargs-parser": "^13.1.0",
     "babel-loader": "^8.0.6",
     "react-docgen-typescript-loader": "^3.5.0",
     "typescript": "^3.7.2"

@@ -1,8 +1,8 @@
 import createEngine, { DiagramModel } from "@projectstorm/react-diagrams";
-import { FileFactory } from "./Nodes/File/FileFactory";
-import { FolderFactory } from "./Nodes/Folder/FolderFactory";
+import { FileFactory } from "./graph/file/FileFactory";
+import { FolderFactory } from "./graph/folder/FolderFactory";
 import { InputType } from "@projectstorm/react-canvas-core";
-import { FolderModel } from "./Nodes/Folder/FolderModel";
+import { FolderModel } from "./graph/folder/FolderModel";
 
 export const initFileDiagramEngine = () => {
   // create an instance of the engine with all the defaults

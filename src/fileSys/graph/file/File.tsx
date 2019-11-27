@@ -98,7 +98,7 @@ export const File = ({ children, model }: Props) => (
         id="svg_1"
         height="80"
         width="60"
-        stroke-width="5"
+        strokeWidth="5"
         stroke="#000000"
         fill="#ffffaa"
       />
