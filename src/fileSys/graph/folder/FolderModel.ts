@@ -1,8 +1,25 @@
-import { NodeModel, DefaultPortModel } from "@projectstorm/react-diagrams";
-import { BaseModelOptions } from "@projectstorm/react-canvas-core";
+import {
+  NodeModel,
+  DefaultPortModel,
+  LinkModel,
+  DefaultLinkModel
+} from "@projectstorm/react-diagrams";
+import {
+  BaseModelOptions,
+  AbstractModelFactory
+} from "@projectstorm/react-canvas-core";
 
 export interface ModelOptions extends BaseModelOptions {
   name: string;
+}
+
+// When new link is created by clicking on port the RightAngleLinkModel needs to be returned.
+export class StraightLinkPortModel extends DefaultPortModel {
+  createLinkModel(factory?: AbstractModelFactory<LinkModel>) {
+    return new DefaultLinkModel({
+      curvyness: 0
+    });
+  }
 }
 
 export class FolderModel extends NodeModel {
@@ -14,20 +31,22 @@ export class FolderModel extends NodeModel {
       type: "activity-node"
     });
     this.name = options.name;
-    this.width = 100;
-    this.height = 100;
+    this.width = 40;
+    this.height = 25;
 
     this.addPort(
-      new DefaultPortModel({
+      new StraightLinkPortModel({
         id: this.getID() + "in",
         in: true,
+        out: false,
         name: "in"
       })
     );
     this.addPort(
-      new DefaultPortModel({
+      new StraightLinkPortModel({
         id: this.getID() + "out",
         in: false,
+        out: true,
         name: "out"
       })
     );

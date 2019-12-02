@@ -3,7 +3,7 @@ import styled, { createGlobalStyle } from "styled-components";
 import { initFileDiagramEngine } from "./initFileDiagramEngine";
 import { CanvasWidget } from "@projectstorm/react-canvas-core";
 import { Terminal } from "./Terminal";
-import { makeLearnCliBundle } from "./commands";
+import { makeLearnCliBundle } from "./filesystemCLI";
 
 const GlobalStyle = createGlobalStyle`
   html,
@@ -41,34 +41,10 @@ const tutorial = makeLearnCliBundle();
 tutorial.initialize(engine);
 
 export const Diagram: React.FC = () => {
-  // useEffect(() => {
-  //   const engineModel = filesysCliLearn.stateToEngineModel(model);
-  //   engine.setModel(engineModel);
-  //   const g = new graphlib.Graph({
-  //     directed: true
-  //   });
-  //   g.setGraph({ rankdir: "TB", ranker: "longest-path" });
-
-  //   engineModel.getNodes().forEach(node =>
-  //     g.setNode(node.getID(), {
-  //       width: node.width,
-  //       height: node.height
-  //     })
-  //   );
-
-  //   dagreLayout(g);
-
-  //   g.nodes().forEach(v => {
-  //     const node = g.node(v);
-  //     engineModel.getNode(v).setPosition(node.x, node.y);
-  //   });
-
-  //   engine.repaintCanvas();
-  // }, [model]);
-
-  const execute = useCallback((command: string) => {
-    tutorial.execute(command, engine);
-  }, []);
+  const execute = useCallback(
+    (command: string) => tutorial.execute(command, engine),
+    []
+  );
 
   return (
     <Container>

@@ -11,13 +11,14 @@ export class FileModel extends NodeModel {
   constructor(options: FileModelOptions) {
     super({ ...options, type: "event-node" });
     this.name = options.name;
-    this.width = 100;
-    this.height = 100;
+    this.width = 60;
+    this.height = 80;
 
     this.addPort(
       new DefaultPortModel({
         id: this.getID() + "in",
         in: true,
+        out: false,
         name: "in"
       })
     );
@@ -25,6 +26,7 @@ export class FileModel extends NodeModel {
       new DefaultPortModel({
         id: this.getID() + "out",
         in: false,
+        out: true,
         name: "out"
       })
     );

@@ -17,7 +17,7 @@ export const theme = {
       black: "#3c3c3c",
       yellow: "ffff00",
       yellowTransparent: "#ffff0099",
-      folder: "#6fc9ff",
+      folder: "#aad4ff",
       folderBack: "#50a0d0",
       file: "#fff56f",
       fileBack: "#dcd35e"

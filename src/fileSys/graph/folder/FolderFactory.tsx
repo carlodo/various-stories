@@ -1,9 +1,8 @@
 import * as React from "react";
 import { FolderModel } from "./FolderModel";
-import { Folder, FolderPort } from "./Folder";
+import { Folder, FolderPortIn, FolderPortOut } from "./Folder";
 import { AbstractReactFactory } from "@projectstorm/react-canvas-core";
 import { DiagramEngine, PortWidget } from "@projectstorm/react-diagrams-core";
-import { DefaultPortModel } from "@projectstorm/react-diagrams";
 
 export class FolderFactory extends AbstractReactFactory<
   FolderModel,
@@ -17,8 +16,17 @@ export class FolderFactory extends AbstractReactFactory<
     return new FolderModel({ name: "/" });
   }
 
-  generateReactWidget(event: any): JSX.Element {
+  generateReactWidget({ model }: { model: any }): JSX.Element {
     const engine = this.engine;
-    return <Folder model={event.model} />;
+    return (
+      <Folder model={model}>
+        <PortWidget engine={engine} port={model.getPort("in")}>
+          <FolderPortIn />
+        </PortWidget>
+        <PortWidget engine={engine} port={model.getPort("out")}>
+          <FolderPortOut />
+        </PortWidget>
+      </Folder>
+    );
   }
 }

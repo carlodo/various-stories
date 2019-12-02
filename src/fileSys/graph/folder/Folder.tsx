@@ -13,25 +13,35 @@ export interface FolderProps {
 
 export interface FolderPortProps {}
 
-const Port = styled.div`
+const PortIn = styled.div`
+  position: relative;
+  top: -22px;
   width: 12px;
   height: 12px;
   border-radius: 2px;
-  background-color: ${({ theme }) => theme.global.colors.lightGray};
+  background-color: ${({ theme }) => theme.global.colors.folder};
   cursor: pointer;
-  :hover {
-    background-color: ${({ theme }) => theme.global.colors.redOrange};
-  }
+`;
+
+const PortOut = styled(PortIn)`
+  top: -27px;
 `;
 
 const Container = styled.div`
+  position: relative;
   pointer-events: none;
   display: flex;
   align-items: center;
   flex-direction: column;
 `;
 
-export const FolderPort = (_props: FolderPortProps) => <Port />;
+const LabelWrap = styled.div`
+  position: relative;
+  top: -20px;
+`;
+
+export const FolderPortIn = (_props: FolderPortProps) => <PortIn />;
+export const FolderPortOut = (_props: FolderPortProps) => <PortOut />;
 
 export const Folder = ({ model, children }: FolderProps) => (
   <Container>
@@ -45,6 +55,9 @@ export const Folder = ({ model, children }: FolderProps) => (
         fill="#aad4ff"
       />
     </svg>
-    <NodeLabel>{model.name}</NodeLabel>
+    {children}
+    <LabelWrap>
+      <NodeLabel>{model.name}</NodeLabel>
+    </LabelWrap>
   </Container>
 );

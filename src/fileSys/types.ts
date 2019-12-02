@@ -28,12 +28,9 @@ export type PrintWorkingDirectoryAction = {
 };
 
 export type FileSysState = {
-  tutorialContext: string[];
-  historyCursor?: number;
-  history: string[];
   user: string;
   pwd: string;
-  folders: { name: string; parent?: string }[];
+  folders: { [key: string]: { name: string; path: string } };
 };
 
 export type FileSysActions =

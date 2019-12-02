@@ -12,6 +12,7 @@ const Container = styled.div`
   height: inherit;
   border-radius: 5px;
   font-family: "Anonymous Pro", monospace;
+  overflow: hidden;
 `;
 
 const Text = styled.p`
@@ -21,7 +22,7 @@ const Text = styled.p`
   max-width: 90%;
 `;
 
-const Caret = styled.div`
+const Caret = styled.span`
     height: 18px
     width: 12px;
     margin-bottom: -5px;
@@ -40,8 +41,20 @@ const Dollar = styled.p`
   padding: 0 5px;
 `;
 
+const HidtoryItem = styled.li`
+  color: white;
+  padding: 5px;
+  font-size: 18px;
+`;
+
+const HistoryList = styled.ul`
+  list-style: none;
+  padding: 0 5px;
+`;
+
 export const Terminal = ({ execute }: Props) => {
   const [value, setValue] = useState("");
+  const [outputs, setOutputs] = useState([]);
 
   useEffect(() => {
     const allHandler = (e: KeyboardEvent) => {
@@ -52,7 +65,11 @@ export const Terminal = ({ execute }: Props) => {
       e.preventDefault();
       if (e.keyCode === 13) {
         // const output = execute(value); Add output to history component
-        execute(value);
+        const commandOutput = execute(value);
+        setOutputs(s => [
+          ...s,
+          { command: value, output: commandOutput, key: Date.now() }
+        ]);
         setValue("");
       } else {
         setValue(val => val + String.fromCharCode(e.charCode));
@@ -75,6 +92,16 @@ export const Terminal = ({ execute }: Props) => {
           <Caret />
         </Text>
       </Input>
+      <HistoryList>
+        {outputs.map(item => (
+          <div key={item.key + "command"}>
+            <HidtoryItem>{item.command}</HidtoryItem>
+            {item.output && (
+              <HidtoryItem key={item.key + "output"}>{item.output}</HidtoryItem>
+            )}
+          </div>
+        ))}
+      </HistoryList>
     </Container>
   );
 };

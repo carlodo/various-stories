@@ -81,7 +81,10 @@ export const makeLearnCliBundle = (): CLIBundle => {
 
   return {
     initialState,
-    initialize: (engine: any) => layout(state, engine),
+    initialize: (engine: any) => {
+      engine.setModel(new DiagramModel());
+      layout(state, engine);
+    },
     componentFactories: [FolderFactory, FileFactory],
     commands,
     execute: (command: string, engine: any): string | undefined => {
@@ -101,11 +104,31 @@ export const makeLearnCliBundle = (): CLIBundle => {
 const layout = (state: FileSysState, engine: DiagramEngine) => {
   const model = engine.getModel();
   const folders = state.folders;
-  model.addAll(
-    ...Object.keys(folders).map(
-      fld => new FolderModel({ id: folders[fld].path, name: folders[fld].name })
-    )
+  const newFolders = Object.keys(folders).reduce<FolderModel[]>(
+    (acc, current) => {
+      const currentFolder = folders[current];
+      return !!model.getNode(currentFolder.path)
+        ? acc
+        : [
+            ...acc,
+            new FolderModel({
+              id: currentFolder.path,
+              name: currentFolder.name
+            })
+          ];
+    },
+    []
   );
+  model.addAll(...newFolders);
+  // model.addAll(
+  //   ...Object.keys(folders).map(
+  //     path =>
+  //       new FolderModel({
+  //         id: folders[path].path,
+  //         name: folders[path].name
+  //       })
+  //   )
+  // );
 
   Object.keys(folders).forEach(foldPath => {
     if (foldPath === "/") return;
@@ -119,13 +142,16 @@ const layout = (state: FileSysState, engine: DiagramEngine) => {
     const node = model.getNode(foldPath);
     const sourcePort = parentNode.getPort("out");
     const targetPort = node.getPort("in");
+    if (Object.keys(targetPort.links).length > 0) return;
+
     const link = sourcePort.createLinkModel();
     link.setSourcePort(sourcePort);
+    sourcePort.reportPosition();
+    // targetPort.reportPosition();
     link.setTargetPort(targetPort);
     model.addLink(link);
   });
 
-  engine.setModel(model);
   const g = new graphlib.Graph({
     multigraph: true,
     directed: true
@@ -164,5 +190,6 @@ const layout = (state: FileSysState, engine: DiagramEngine) => {
     model.getNode(v).setPosition(node.x, node.y);
   });
 
+  engine.setModel(model);
   engine.repaintCanvas();
 };
