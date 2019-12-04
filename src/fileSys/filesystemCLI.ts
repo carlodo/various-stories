@@ -71,6 +71,7 @@ const initialState: FileSysState = {
   pwd: "/home/joe",
   folders: {
     "/": { name: "/", path: "/" },
+    "/etc": { name: "etc", path: "/etc" },
     "/home": { name: "home", path: "/home" },
     "/home/joe": { name: "joe", path: "/home/joe" }
   }
