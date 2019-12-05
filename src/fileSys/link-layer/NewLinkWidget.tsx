@@ -2,6 +2,7 @@ import * as React from "react";
 import { DiagramEngine } from "@projectstorm/react-diagrams-core";
 import { DefaultLinkModel } from "@projectstorm/react-diagrams";
 import { Spring, animated } from "react-spring/renderprops";
+import { theme } from "../../theme";
 
 export interface DefaultLinkProps {
   link: DefaultLinkModel;
@@ -11,22 +12,16 @@ export interface DefaultLinkProps {
 export const NewLinkWidget = ({ link }: DefaultLinkProps) => {
   const [point1, point2] = link.getPoints();
 
+  const initialPoint = `M ${point1.getX()} ${point1.getY()} L ${point1.getX()} ${point1.getY()}`;
+  const newPath = `M ${point1.getX()} ${point1.getY()} L ${point2.getX()} ${point2.getY()}`;
+
   return (
-    <Spring
-      to={{
-        x1: point1.getX(),
-        x2: point2.getX(),
-        y1: point1.getY(),
-        y2: point2.getY()
-      }}
-    >
+    <Spring native from={{ d: initialPoint }} to={{ d: newPath }}>
       {props => (
-        <animated.line
-          x1={props.x1}
-          y1={props.y1}
-          x2={props.x2}
-          y2={props.y2}
-          style={{ stroke: "rgb(255,0,0)", strokeWidth: 2 }}
+        <animated.path
+          {...props}
+          stroke={theme.global.colors.gray}
+          strokeWidth={2}
         />
       )}
     </Spring>
