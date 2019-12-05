@@ -114,7 +114,6 @@ export const Terminal = ({ execute }: Props) => {
             ref={inputEl}
             onKeyDown={keyDown}
             onChange={e => setValue(e.target.value)}
-            id="termunalInput"
           ></TextInput>
           <TextWrapHelper
             dangerouslySetInnerHTML={{

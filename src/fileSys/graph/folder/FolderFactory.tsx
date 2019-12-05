@@ -9,11 +9,11 @@ export class FolderFactory extends AbstractReactFactory<
   DiagramEngine
 > {
   constructor() {
-    super("activity-node");
+    super("folder-node");
   }
 
-  generateModel(initialConfig) {
-    return new FolderModel({ name: "/" });
+  generateModel(event: any) {
+    return new FolderModel({ name: event.name });
   }
 
   generateReactWidget({ model }: { model: any }): JSX.Element {

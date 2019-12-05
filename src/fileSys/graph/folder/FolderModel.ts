@@ -30,7 +30,7 @@ export class FolderModel extends NodeModel {
   constructor(options: ModelOptions) {
     super({
       ...options,
-      type: "activity-node"
+      type: "folder-node"
     });
     this.name = options.name;
     this.width = 40;

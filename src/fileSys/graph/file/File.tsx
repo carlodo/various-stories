@@ -12,34 +12,6 @@ export interface Props {
   children?: React.ReactNode;
 }
 
-const Body = styled.div<{ selected: boolean }>`
-  border: solid 2px
-    ${({ selected, theme }) =>
-      selected ? theme.global.colors.redOrange : theme.global.colors.gray};
-  border-top: none;
-  border-radius: 0px 0px 5px 5px;
-  width: 40px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-  background-color: ${({ theme }) => theme.global.colors.file};
-  pointer-events: all;
-  cursor: crosshair;
-`;
-
-const Port = styled.div`
-  width: 12px;
-  height: 12px;
-  border-radius: 4px;
-  background-color: ${({ theme }) => theme.global.colors.lightGray};
-  cursor: pointer;
-  :hover {
-    background-color: ${({ theme }) => theme.global.colors.redOrange};
-  }
-`;
-
 const Container = styled.div`
   pointer-events: none;
   display: flex;
@@ -47,62 +19,30 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Trap = styled.div`
+const LabelWrap = styled.div`
   position: relative;
-  right: 0px;
-  top: -98px;
-  width: 28px;
-  border-radius: 5px 0px 0px 0px;
-  border-bottom: 12px solid ${({ theme }) => theme.global.colors.file};
-  border-left: 0px solid transparent;
-  border-right: 12px solid transparent;
+  margin-top: 5px;
+  font-size: 0.8em;
 `;
 
-const TrapBorder = styled.div`
-  position: relative;
-  right: 0px;
-  top: -86px;
-  width: 30px;
-  border-radius: 5px 0px 0px 0px;
-  border-bottom: 14px solid ${({ theme }) => theme.global.colors.gray};
-  border-left: 0px solid transparent;
-  border-right: 14px solid transparent;
-`;
-
-const TrapEar = styled.div`
-  position: relative;
-  right: -14px;
-  top: -124px;
-  width: 0px;
-  border-bottom: 12px solid ${({ theme }) => theme.global.colors.fileBack};
-  border-left: 0px solid transparent;
-  border-right: 12px solid transparent;
-`;
-
-const TrapEarBorder = styled.div`
-  position: relative;
-  right: -14px;
-  top: -111px;
-  width: 0px;
-  border-bottom: 14px solid ${({ theme }) => theme.global.colors.gray};
-  border-left: 0px solid transparent;
-  border-right: 14px solid transparent;
-`;
-
-export const FilePort = () => <Port />;
+export const FileBody = () => (
+  <svg width={25} height={40}>
+    <rect
+      id="svg_2"
+      height={40}
+      width={25}
+      strokeWidth={2}
+      stroke="#000000"
+      fill="#ecf5b9"
+    />
+  </svg>
+);
 
 export const File = ({ children, model }: Props) => (
   <Container>
-    <svg width="60" height="80">
-      <rect
-        id="svg_1"
-        height="80"
-        width="60"
-        strokeWidth="5"
-        stroke="#000000"
-        fill="#ffffaa"
-      />
-    </svg>
-    <NodeLabel>{model.name}</NodeLabel>
+    {children}
+    <LabelWrap>
+      <NodeLabel>{model.name}</NodeLabel>
+    </LabelWrap>
   </Container>
 );

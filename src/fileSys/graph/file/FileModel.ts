@@ -9,10 +9,10 @@ export class FileModel extends NodeModel {
   name: string;
 
   constructor(options: FileModelOptions) {
-    super({ ...options, type: "event-node" });
+    super({ ...options, type: "file-node" });
     this.name = options.name;
-    this.width = 60;
-    this.height = 80;
+    this.width = 25;
+    this.height = 40;
 
     this.addPort(
       new DefaultPortModel({

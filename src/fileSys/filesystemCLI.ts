@@ -1,43 +1,37 @@
-import { FileSysState, ExecutableCommand } from "./types";
-import { FolderFactory } from "./graph/folder/FolderFactory";
-import { FileFactory } from "./graph/file/FileFactory";
 import { DiagramModel, DiagramEngine } from "@projectstorm/react-diagrams";
 import { FolderModel } from "./graph/folder/FolderModel";
 import { parse } from "../utils/parser";
 import { graphlib, layout as dagreLayout } from "dagre";
+import { TerminalCommand, CLIBundle } from "../commandMe/types";
+import { FileModel } from "./graph/file/FileModel";
 
-type Cmnd = {
-  command: string;
-  description: string;
+export type FileSysState = {
+  user: string;
+  pwd: string;
+  folders: { [key: string]: { name: string; path: string } };
+  files: { [key: string]: { name: string; path: string } };
+};
+
+type Command = {
+  description?: string;
   execute: (
-    command: ExecutableCommand,
+    command: TerminalCommand,
     state: FileSysState
   ) => { state: FileSysState; output?: string };
 };
 
-export type Commands = { [key: string]: Cmnd };
+export type Commands = { [key: string]: Command };
 
-export type CLIBundle = {
-  initialState: unknown;
-  initialize: (engine: any) => void;
-  componentFactories: unknown;
-  commands: Commands;
-  execute: (command: string, Engine: unknown) => string | undefined;
-};
-
-const commands: { [key: string]: Cmnd } = {
+const commands: { [key: string]: Command } = {
   ls: {
-    command: "ls",
     description: "list directory",
-    execute: (_action: ExecutableCommand, state: FileSysState) => ({
+    execute: (_action: TerminalCommand, state: FileSysState) => ({
       state,
       output: "ls command"
     })
   },
   mkdir: {
-    command: "mkdir",
-    description: "makes directory",
-    execute: (action: ExecutableCommand, state: FileSysState) => {
+    execute: (action: TerminalCommand, state: FileSysState) => {
       const name = action.commands[1];
       const path = `${state.pwd}/${name}`;
 
@@ -53,12 +47,26 @@ const commands: { [key: string]: Cmnd } = {
     }
   },
   pwd: {
-    command: "pwd",
-    description: "print working directory",
-    execute: (_action: ExecutableCommand, state: FileSysState) => ({
+    execute: (_action: TerminalCommand, state: FileSysState) => ({
       state,
       output: state.pwd
     })
+  },
+  touch: {
+    execute: (action: TerminalCommand, state: FileSysState) => {
+      const name = action.commands[1];
+      const path = `${state.pwd}/${name}`;
+
+      return {
+        state: {
+          ...state,
+          files: {
+            ...state.files,
+            [path]: { name, path }
+          }
+        }
+      };
+    }
   }
 };
 
@@ -70,6 +78,12 @@ const initialState: FileSysState = {
     "/etc": { name: "etc", path: "/etc" },
     "/home": { name: "home", path: "/home" },
     "/home/joe": { name: "joe", path: "/home/joe" }
+  },
+  files: {
+    "/home/joe/.bash_profile": {
+      name: ".bash_profile",
+      path: "/home/joe/.bash_profile"
+    }
   }
 };
 
@@ -77,14 +91,11 @@ export const makeLearnCliBundle = (): CLIBundle => {
   let state = initialState;
 
   return {
-    initialState,
     initialize: (engine: any) => {
       engine.setModel(new DiagramModel());
       layout(state, engine);
     },
-    componentFactories: [FolderFactory, FileFactory],
-    commands,
-    execute: (command: string, engine: any): string | undefined => {
+    execute: (command: string, engine: DiagramEngine): string | undefined => {
       const executableCommand = parse(command);
       if (Object.keys(commands).indexOf(executableCommand.mainCommand) !== -1) {
         const supportedCommand = executableCommand.mainCommand as keyof Commands;
@@ -123,16 +134,35 @@ const layout = (state: FileSysState, engine: DiagramEngine) => {
   );
   model.addAll(...newFolders);
 
-  Object.keys(folders).forEach(foldPath => {
-    if (foldPath === "/") return;
-    const paths = foldPath.split("/");
+  const newFiles = Object.keys(state.files).reduce<FileModel[]>(
+    (acc, current) => {
+      const currentFile = state.files[current];
+
+      return !!model.getNode(currentFile.path)
+        ? acc
+        : [
+            ...acc,
+            new FileModel({
+              id: currentFile.path,
+              name: currentFile.name
+            })
+          ];
+    },
+    []
+  );
+
+  model.addAll(...newFiles);
+
+  Object.keys({ ...folders, ...state.files }).forEach(currentPath => {
+    if (currentPath === "/") return;
+    const paths = currentPath.split("/");
     paths.pop();
     const parent =
       paths.length === 1
         ? folders["/"]
         : folders[`/${paths.slice(1).join("/")}`];
     const parentNode = model.getNode(parent.path);
-    const node = model.getNode(foldPath);
+    const node = model.getNode(currentPath);
     const sourcePort = parentNode.getPort("out");
     const targetPort = node.getPort("in");
     if (Object.keys(targetPort.links).length > 0) return;

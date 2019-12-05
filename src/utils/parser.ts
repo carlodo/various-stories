@@ -1,7 +1,7 @@
 import parser from "yargs-parser";
-import { ExecutableCommand } from "../filesys/types";
+import { TerminalCommand } from "../commandMe/types";
 
-export const parse = (command: string): ExecutableCommand => {
+export const parse = (command: string): TerminalCommand => {
   const { _, ...rest } = parser(command);
   return { mainCommand: _[0], commands: _, options: rest };
 };
