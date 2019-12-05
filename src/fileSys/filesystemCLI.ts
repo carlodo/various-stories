@@ -96,7 +96,7 @@ export const makeLearnCliBundle = (): CLIBundle => {
           .state;
         layout(state, engine);
       } else {
-        return `Sorry, command "${command}" is not supported`;
+        return `Sorry, command "${executableCommand.mainCommand}" is not supported`;
       }
     }
   };
