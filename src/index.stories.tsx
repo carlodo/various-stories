@@ -16,6 +16,7 @@ import { themeDecorator } from "./themeDecorator";
 import { Folder } from "./filesys/graph/folder/Folder";
 import { File } from "./filesys/graph/file/File";
 import { Diagram as FileDiagram } from "./filesys/Diagram";
+import { diagramDecorator } from "./diagramDecorator";
 
 storiesOf("Flow diagram", module)
   .addDecorator(themeDecorator)
@@ -75,10 +76,14 @@ storiesOf("Flow diagram", module)
     }
   );
 
-storiesOf("File system", module)
+storiesOf("File system diagram", module)
+  .addParameters({ options: { enableShortcuts: false } })
+  .addDecorator(diagramDecorator)
+  .add("Diagram", () => <FileDiagram />);
+
+storiesOf("File system diagram components", module)
   .addParameters({ options: { enableShortcuts: false } })
   .addDecorator(themeDecorator)
-  .add("Diagram", () => <FileDiagram />)
   .add(
     "Folder",
     () => <Folder model={{ name: "/", isSelected: () => false }} />,

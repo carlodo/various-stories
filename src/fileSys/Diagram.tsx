@@ -7,32 +7,33 @@ import { makeLearnCliBundle } from "./filesystemCLI";
 
 const GlobalStyle = createGlobalStyle`
   html,
-  body,
-  #root {
-    width: 100vw;
+  body {
     height: 100vh;
     font-style: sans-serif;
   }
 `;
 
 const Container = styled.div`
-  padding: 20px;
-  width: 100vw;
-  height: 100vh;
+  padding: 20px 0 20px 20px;
+  height: 100%;
   position: relative;
   display: flex;
   flex-direction: row;
-  background-color: orange;
+  background-color: ${({ theme }) => theme.global.colors.blueDeep};
+`;
 
-  > .diagram {
-    flex: 4;
-    height: 100vh;
-  }
+const DiagramWidget = styled(CanvasWidget)`
+  flex: 4;
+  height: auto;
+
+  /* override react-diagram defaults */
+  overflow: scroll !important;
+  cursor: default !important;
 `;
 
 const TerminalContainer = styled.div`
   flex: 1;
-  height: 100vh;
+  height: 100%;
   min-width: 300px;
 `;
 
@@ -47,12 +48,12 @@ export const Diagram: React.FC = () => {
   );
 
   return (
-    <Container>
+    <Container id="ccc">
       <GlobalStyle />
       <TerminalContainer>
         <Terminal execute={execute} />
       </TerminalContainer>
-      <CanvasWidget engine={engine} className="diagram" />
+      <DiagramWidget engine={engine} className="diagram" />
     </Container>
   );
 };

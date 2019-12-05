@@ -33,7 +33,7 @@ export const FolderBody = () => (
       id="svg_1"
       height={25}
       width={40}
-      strokeWidth="5"
+      strokeWidth={2}
       stroke="#000000"
       fill="#aad4ff"
     />

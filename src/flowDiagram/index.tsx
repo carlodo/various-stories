@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import { theme } from "./theme";
 import { CanvasWidget } from "@projectstorm/react-canvas-core";
 import { DefaultNodeModel } from "@projectstorm/react-diagrams";
@@ -13,7 +13,7 @@ const engine = initEngine();
 
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
   position: relative;
 `;
 
@@ -45,7 +45,7 @@ const GlobalStyle = createGlobalStyle`
 
 export const Diagram: React.FC = () => {
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <GlobalStyle />
       <Container
         onDrop={event => {
@@ -80,6 +80,6 @@ export const Diagram: React.FC = () => {
         <DetailsOverlay />
         <CanvasWidget engine={engine} className="diagram" />
       </Container>
-    </ThemeProvider>
+    </>
   );
 };

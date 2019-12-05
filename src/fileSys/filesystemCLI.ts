@@ -121,15 +121,6 @@ const layout = (state: FileSysState, engine: DiagramEngine) => {
     []
   );
   model.addAll(...newFolders);
-  // model.addAll(
-  //   ...Object.keys(folders).map(
-  //     path =>
-  //       new FolderModel({
-  //         id: folders[path].path,
-  //         name: folders[path].name
-  //       })
-  //   )
-  // );
 
   Object.keys(folders).forEach(foldPath => {
     if (foldPath === "/") return;
@@ -148,7 +139,7 @@ const layout = (state: FileSysState, engine: DiagramEngine) => {
     const link = sourcePort.createLinkModel();
     link.setSourcePort(sourcePort);
     sourcePort.reportPosition();
-    // targetPort.reportPosition();
+
     link.setTargetPort(targetPort);
     model.addLink(link);
   });

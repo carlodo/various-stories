@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import styled from "styled-components";
 
 export interface Props {
@@ -8,40 +8,64 @@ export interface Props {
 const Container = styled.div`
   display: flex;
   flex-direction: column-reverse;
-  background-color: gray;
-  height: inherit;
+  background-color: ${({ theme }) => theme.global.colors.transparentGray};
+  height: calc(100% - 20px);
   border-radius: 5px;
   font-family: "Anonymous Pro", monospace;
-  overflow: hidden;
+  overflow-y: scroll;
+  padding: 10px 0;
 `;
 
-const Text = styled.p`
-  background-color: gray;
-  color: white;
-  font-size: 18px;
-  max-width: 90%;
-`;
-
-const Caret = styled.span`
-    height: 18px
-    width: 12px;
-    margin-bottom: -5px;
-    background-color: white;
-    display: inline-block;
-`;
-
-const Input = styled.div`
+const InputContainer = styled.div`
   display: flex;
-  align-items: end;
+  position: relative;
+`;
+
+const TextContainer = styled.div`
+  flex: 1;
+  position: relative;
+`;
+
+const TextInput = styled.textarea`
+  word-wrap: break-word;
+  box-sizing: border-box;
+  padding: 5px 5px 5px 0;
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  font-size: 1.2em;
+  font-family: "Anonymous Pro", monospace;
+  background-color: transparent;
+  border: none;
+  resize: none;
+
+  :focus {
+    outline-width: 0;
+  }
+
+  caret-color: ${({ theme }) => theme.global.colors.white};
+  color: ${({ theme }) => theme.global.colors.white};
+`;
+
+const TextWrapHelper = styled.div`
+  font-size: 1.2em;
+  padding-bottom: 1.5em;
+  visibility: hidden;
+  word-wrap: break-word;
+  box-sizing: border-box;
+  padding: 5px;
+  width: 100%;
 `;
 
 const Dollar = styled.p`
-  font-size: 18px;
+  font-size: 1.2em;
   color: #abfd98;
-  padding: 0 5px;
+  padding: 5px;
+  margin: 0px;
 `;
 
-const HidtoryItem = styled.li`
+const HistoryItem = styled.li`
   color: white;
   padding: 5px;
   font-size: 18px;
@@ -55,50 +79,58 @@ const HistoryList = styled.ul`
 export const Terminal = ({ execute }: Props) => {
   const [value, setValue] = useState("");
   const [outputs, setOutputs] = useState([]);
+  const inputEl = useRef(null);
 
-  useEffect(() => {
-    const allHandler = (e: KeyboardEvent) => {
-      if (e.code === "Backspace")
-        e.metaKey ? setValue("") : setValue(val => val.slice(0, -1));
-    };
-    const handler = (e: KeyboardEvent) => {
+  const focusInput = useCallback(
+    () => inputEl.current && inputEl.current.focus(),
+    [inputEl]
+  );
+
+  useEffect(focusInput, [inputEl]);
+
+  const keyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (e.keyCode !== 13) return;
+
       e.preventDefault();
-      if (e.keyCode === 13) {
-        // const output = execute(value); Add output to history component
-        const commandOutput = execute(value);
-        setOutputs(s => [
-          ...s,
-          { command: value, output: commandOutput, key: Date.now() }
-        ]);
-        setValue("");
-      } else {
-        setValue(val => val + String.fromCharCode(e.charCode));
-      }
-    };
-    window.addEventListener("keypress", handler, false);
-    window.addEventListener("keydown", allHandler, false);
-    return () => {
-      window.removeEventListener("keypress", handler);
-      window.removeEventListener("keydown", allHandler);
-    };
-  }, [value]); // TODO: remove this dependency
+      const value = e.currentTarget.value;
+
+      if (value === "") return;
+
+      setValue("");
+      const commandOutput = execute(value);
+      setOutputs(outputs => [
+        ...outputs,
+        { command: value, output: commandOutput, key: Date.now() }
+      ]);
+    },
+    [execute, setOutputs]
+  );
 
   return (
-    <Container>
-      <Input>
+    <Container onClick={focusInput}>
+      <InputContainer>
         <Dollar>$</Dollar>
-        <Text>
-          {value}
-          <Caret />
-        </Text>
-      </Input>
+        <TextContainer>
+          <TextInput
+            value={value}
+            ref={inputEl}
+            onKeyDown={keyDown}
+            onChange={e => setValue(e.target.value)}
+            id="termunalInput"
+          ></TextInput>
+          <TextWrapHelper
+            dangerouslySetInnerHTML={{
+              __html: value.replace(/\n/g, "<br/>&nbsp")
+            }}
+          ></TextWrapHelper>
+        </TextContainer>
+      </InputContainer>
       <HistoryList>
         {outputs.map(item => (
-          <div key={item.key + "command"}>
-            <HidtoryItem>{item.command}</HidtoryItem>
-            {item.output && (
-              <HidtoryItem key={item.key + "output"}>{item.output}</HidtoryItem>
-            )}
+          <div key={item.key}>
+            <HistoryItem>{item.command}</HistoryItem>
+            {item.output && <HistoryItem>{item.output}</HistoryItem>}
           </div>
         ))}
       </HistoryList>

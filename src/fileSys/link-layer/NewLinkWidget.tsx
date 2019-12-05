@@ -18,11 +18,7 @@ export const NewLinkWidget = ({ link }: DefaultLinkProps) => {
   return (
     <Spring native from={{ d: initialPoint }} to={{ d: newPath }}>
       {props => (
-        <animated.path
-          {...props}
-          stroke={theme.global.colors.gray}
-          strokeWidth={2}
-        />
+        <animated.path {...props} stroke={theme.global.colors.redOrange} />
       )}
     </Spring>
   );
