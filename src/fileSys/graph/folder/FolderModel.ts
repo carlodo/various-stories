@@ -6,13 +6,12 @@ import {
 } from "@projectstorm/react-diagrams";
 import {
   BaseModelOptions,
-  AbstractModelFactory,
-  BasePositionModel
+  AbstractModelFactory
 } from "@projectstorm/react-canvas-core";
-import { Point } from "@projectstorm/geometry";
 
-export interface ModelOptions extends BaseModelOptions {
+export interface FolderModelOptions extends BaseModelOptions {
   name: string;
+  isPWD?: boolean;
 }
 
 // When new link is created by clicking on port the RightAngleLinkModel needs to be returned.
@@ -26,8 +25,9 @@ export class StraightLinkPortModel extends DefaultPortModel {
 
 export class FolderModel extends NodeModel {
   name: string;
+  isPWD: boolean;
 
-  constructor(options: ModelOptions) {
+  constructor(options: FolderModelOptions) {
     super({
       ...options,
       type: "folder-node"
@@ -54,8 +54,8 @@ export class FolderModel extends NodeModel {
     );
   }
 
-  setName(name: string) {
-    this.name = name;
+  setPwd(isPWD: boolean) {
+    this.isPWD = isPWD;
   }
 
   serialize() {

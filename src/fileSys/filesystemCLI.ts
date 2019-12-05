@@ -120,7 +120,9 @@ const layout = (state: FileSysState, engine: DiagramEngine) => {
   const newFolders = Object.keys(folders).reduce<FolderModel[]>(
     (acc, current) => {
       const currentFolder = folders[current];
-      return !!model.getNode(currentFolder.path)
+      const mod = model.getNode(currentFolder.path);
+      console.log(currentFolder.path, state.pwd, "fff");
+      return !!mod
         ? acc
         : [
             ...acc,
@@ -132,7 +134,13 @@ const layout = (state: FileSysState, engine: DiagramEngine) => {
     },
     []
   );
+
   model.addAll(...newFolders);
+
+  const node = model.getNode(state.pwd);
+  if (node && node instanceof FolderModel) {
+    node.setPwd(true);
+  }
 
   const newFiles = Object.keys(state.files).reduce<FileModel[]>(
     (acc, current) => {

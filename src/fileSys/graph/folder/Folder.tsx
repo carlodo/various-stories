@@ -1,13 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { NodeLabel } from "../NodeLabel";
-
-export interface Model {
-  name: string;
-}
+import { FolderModelOptions } from "./FolderModel";
 
 export interface FolderProps {
-  model: Model;
+  model: FolderModelOptions;
   children?: React.ReactNode;
 }
 
@@ -44,7 +41,7 @@ export const Folder = ({ model, children }: FolderProps) => (
   <Container>
     {children}
     <LabelWrap>
-      <NodeLabel>{model.name}</NodeLabel>
+      <NodeLabel>{`${model.name}${model.isPWD && "*"}`}</NodeLabel>
     </LabelWrap>
   </Container>
 );
