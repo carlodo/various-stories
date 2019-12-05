@@ -6,8 +6,10 @@ import {
 } from "@projectstorm/react-diagrams";
 import {
   BaseModelOptions,
-  AbstractModelFactory
+  AbstractModelFactory,
+  BasePositionModel
 } from "@projectstorm/react-canvas-core";
+import { Point } from "@projectstorm/geometry";
 
 export interface ModelOptions extends BaseModelOptions {
   name: string;
