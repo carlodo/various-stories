@@ -27,7 +27,6 @@ const TextContainer = styled.div`
 `;
 
 const TextInput = styled.textarea`
-  word-wrap: break-word;
   box-sizing: border-box;
   padding: 5px 5px 5px 0;
   overflow: hidden;
@@ -52,8 +51,6 @@ const TextWrapHelper = styled.div`
   font-size: 1.2em;
   padding-bottom: 1.5em;
   visibility: hidden;
-  word-wrap: break-word;
-  box-sizing: border-box;
   padding: 5px;
   width: 100%;
 `;
@@ -73,7 +70,7 @@ const HistoryItem = styled.li`
 
 const HistoryList = styled.ul`
   list-style: none;
-  padding: 0 5px;
+  padding: 0 0;
 `;
 
 export const Terminal = ({ execute }: Props) => {
@@ -129,7 +126,7 @@ export const Terminal = ({ execute }: Props) => {
       <HistoryList>
         {outputs.map(item => (
           <div key={item.key}>
-            <HistoryItem>{item.command}</HistoryItem>
+            <HistoryItem>$ {item.command}</HistoryItem>
             {item.output && <HistoryItem>{item.output}</HistoryItem>}
           </div>
         ))}

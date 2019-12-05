@@ -15,11 +15,7 @@ type Cmnd = {
   ) => { state: FileSysState; output?: string };
 };
 
-export type Commands = {
-  ls: Cmnd;
-  mkdir: Cmnd;
-  pwd: Cmnd;
-};
+export type Commands = { [key: string]: Cmnd };
 
 export type CLIBundle = {
   initialState: unknown;
@@ -29,7 +25,7 @@ export type CLIBundle = {
   execute: (command: string, Engine: unknown) => string | undefined;
 };
 
-const commands = {
+const commands: { [key: string]: Cmnd } = {
   ls: {
     command: "ls",
     description: "list directory",
@@ -92,9 +88,14 @@ export const makeLearnCliBundle = (): CLIBundle => {
       const executableCommand = parse(command);
       if (Object.keys(commands).indexOf(executableCommand.mainCommand) !== -1) {
         const supportedCommand = executableCommand.mainCommand as keyof Commands;
-        state = commands[supportedCommand].execute(executableCommand, state)
-          .state;
+        const { state: newState, output } = commands[supportedCommand].execute(
+          executableCommand,
+          state
+        );
+        state = newState;
         layout(state, engine);
+
+        return output;
       } else {
         return `Sorry, command "${executableCommand.mainCommand}" is not supported`;
       }
