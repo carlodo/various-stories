@@ -21,7 +21,7 @@ export class FolderFactory extends AbstractReactFactory<
     return (
       <Folder model={model}>
         <PortWidget engine={engine} port={model.getPort("in")}></PortWidget>
-        <FolderBody />
+        <FolderBody model={model} />
         <PortWidget engine={engine} port={model.getPort("out")}></PortWidget>
       </Folder>
     );

@@ -1,72 +1,25 @@
 import { DiagramModel, DiagramEngine } from "@projectstorm/react-diagrams";
 import { FolderModel } from "./graph/folder/FolderModel";
 import { parse } from "../utils/parser";
-import { TerminalCommand, CLIBundle } from "../commandMe/types";
+import { CLIBundle } from "../commandMe/types";
 import { FileModel } from "./graph/file/FileModel";
-
-export type FileSysState = {
-  user: string;
-  pwd: string;
-  folders: { [key: string]: { name: string; path: string } };
-  files: { [key: string]: { name: string; path: string } };
-};
-
-type Command = {
-  description?: string;
-  execute: (
-    command: TerminalCommand,
-    state: FileSysState
-  ) => { state: FileSysState; output?: string };
-};
+import { Command, FileSysState } from "./types";
+import { ls } from "./commands/ls";
+import { mkdir } from "./commands/mkdir";
+import { pwd } from "./commands/pwd";
+import { touch } from "./commands/touch";
+import { cd } from "./commands/cd";
+import { help } from "./commands/help";
 
 export type Commands = { [key: string]: Command };
 
 const commands: { [key: string]: Command } = {
-  ls: {
-    description: "list directory",
-    execute: (_action: TerminalCommand, state: FileSysState) => ({
-      state,
-      output: "ls command"
-    })
-  },
-  mkdir: {
-    execute: (action: TerminalCommand, state: FileSysState) => {
-      const name = action.commands[1];
-      const path = `${state.pwd}/${name}`;
-
-      return {
-        state: {
-          ...state,
-          folders: {
-            ...state.folders,
-            [path]: { name, path }
-          }
-        }
-      };
-    }
-  },
-  pwd: {
-    execute: (_action: TerminalCommand, state: FileSysState) => ({
-      state,
-      output: state.pwd
-    })
-  },
-  touch: {
-    execute: (action: TerminalCommand, state: FileSysState) => {
-      const name = action.commands[1];
-      const path = `${state.pwd}/${name}`;
-
-      return {
-        state: {
-          ...state,
-          files: {
-            ...state.files,
-            [path]: { name, path }
-          }
-        }
-      };
-    }
-  }
+  ls,
+  mkdir,
+  pwd,
+  touch,
+  cd,
+  help
 };
 
 const initialState: FileSysState = {

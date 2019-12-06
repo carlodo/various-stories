@@ -62,12 +62,14 @@ export class FolderModel extends NodeModel {
   serialize() {
     return {
       ...super.serialize(),
-      name: this.name
+      name: this.name,
+      isPwd: this.isPWD
     };
   }
 
   deserialize(event: any): void {
     super.deserialize(event);
     this.name = event.data.name;
+    this.isPWD = event.data.isPWD;
   }
 }

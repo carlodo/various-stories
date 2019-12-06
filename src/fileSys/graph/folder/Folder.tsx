@@ -23,7 +23,7 @@ const LabelWrap = styled.div`
   font-size: 0.8em;
 `;
 
-export const FolderBody = () => (
+export const FolderBody = ({ model }) => (
   <svg width={40} height={25}>
     <rect
       id="svg_1"
@@ -31,7 +31,7 @@ export const FolderBody = () => (
       width={40}
       strokeWidth={2}
       stroke="#000000"
-      fill="#aad4ff"
+      fill={model.isPWD ? "#ddd4ff" : "#aad4ff"}
     />
   </svg>
 );

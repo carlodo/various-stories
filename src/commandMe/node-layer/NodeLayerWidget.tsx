@@ -1,10 +1,5 @@
 import * as React from "react";
-import * as _ from "lodash";
-import {
-  NodeLayerModel,
-  DiagramEngine,
-  NodeModel
-} from "@projectstorm/react-diagrams";
+import { NodeLayerModel, DiagramEngine } from "@projectstorm/react-diagrams";
 import { NodeWidget } from "./NodeWidget";
 
 export interface NodeLayerWidgetProps {
@@ -14,11 +9,12 @@ export interface NodeLayerWidgetProps {
 
 export class NodeLayerWidget extends React.Component<NodeLayerWidgetProps> {
   render() {
-    return _.map(this.props.layer.getNodes(), (node: NodeModel) => (
+    const nodes = this.props.layer.getNodes();
+    return Object.keys(nodes).map(nodeKey => (
       <NodeWidget
-        key={node.getID()}
+        key={nodes[nodeKey].getID()}
         diagramEngine={this.props.engine}
-        node={node}
+        node={nodes[nodeKey]}
       />
     ));
   }

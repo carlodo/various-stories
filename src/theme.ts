@@ -23,7 +23,8 @@ export const theme = {
       folder: "#aad4ff",
       folderBack: "#50a0d0",
       file: "#fff56f",
-      fileBack: "#dcd35e"
+      fileBack: "#dcd35e",
+      orange: "#efab7b"
     },
     table: {
       footer: {

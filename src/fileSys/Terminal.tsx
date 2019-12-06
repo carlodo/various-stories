@@ -71,6 +71,7 @@ const HistoryItem = styled.li`
 const HistoryList = styled.ul`
   list-style: none;
   padding: 0 0;
+  white-space: pre-line;
 `;
 
 export const Terminal = ({ execute }: Props) => {
