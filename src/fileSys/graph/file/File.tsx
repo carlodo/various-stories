@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { NodeLabel } from "../NodeLabel";
+import { theme } from "../../../theme";
 
 export interface Model {
   name: string;
@@ -26,14 +27,20 @@ const LabelWrap = styled.div`
 `;
 
 export const FileBody = () => (
-  <svg width={25} height={40}>
-    <rect
+  <svg height={40} width={30}>
+    <path
       id="svg_2"
-      height={40}
-      width={25}
-      strokeWidth={2}
-      stroke="#000000"
-      fill="#ecf5b9"
+      d="M 0 0 L 0 40 L 30 40 L 30 10 L 20 10 L 20 0 Z"
+      strokeWidth={1}
+      stroke="#222"
+      fill={theme.global.colors.orange}
+    />
+    <path
+      id="svg_2"
+      d="M 20 0 L 20 10 L 30 10 Z"
+      strokeWidth={0.33}
+      stroke="#222"
+      fill={theme.global.colors.orange}
     />
   </svg>
 );
