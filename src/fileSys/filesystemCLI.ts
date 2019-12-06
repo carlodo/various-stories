@@ -4,6 +4,7 @@ import { parse } from "../utils/parser";
 import { graphlib, layout as dagreLayout } from "dagre";
 import { TerminalCommand, CLIBundle } from "../commandMe/types";
 import { FileModel } from "./graph/file/FileModel";
+import { layoutGraph } from "../commandMe/layout";
 
 export type FileSysState = {
   user: string;
@@ -97,7 +98,7 @@ export const makeLearnCliBundle = (): CLIBundle => {
     },
     execute: (command: string, engine: DiagramEngine): string | undefined => {
       const executableCommand = parse(command);
-      if (Object.keys(commands).indexOf(executableCommand.mainCommand) !== -1) {
+      if (commands[executableCommand.mainCommand]) {
         const supportedCommand = executableCommand.mainCommand as keyof Commands;
         const { state: newState, output } = commands[supportedCommand].execute(
           executableCommand,
@@ -115,60 +116,63 @@ export const makeLearnCliBundle = (): CLIBundle => {
 };
 
 const layout = (state: FileSysState, engine: DiagramEngine) => {
+  const { folders, files, pwd } = state;
   const model = engine.getModel();
-  const folders = state.folders;
+
   const newFolders = Object.keys(folders).reduce<FolderModel[]>(
     (acc, current) => {
       const currentFolder = folders[current];
-      const mod = model.getNode(currentFolder.path);
-      console.log(currentFolder.path, state.pwd, "fff");
-      return !!mod
-        ? acc
-        : [
-            ...acc,
-            new FolderModel({
-              id: currentFolder.path,
-              name: currentFolder.name
-            })
-          ];
+      const currentModel = model.getNode(currentFolder.path);
+      if (!!currentModel) {
+        if (currentModel && currentModel instanceof FolderModel)
+          currentModel.setPwd(false);
+        return acc;
+      } else {
+        return [
+          ...acc,
+          new FolderModel({
+            id: currentFolder.path,
+            name: currentFolder.name
+          })
+        ];
+      }
     },
     []
   );
 
   model.addAll(...newFolders);
 
-  const node = model.getNode(state.pwd);
+  const node = model.getNode(pwd);
   if (node && node instanceof FolderModel) {
     node.setPwd(true);
   }
 
-  const newFiles = Object.keys(state.files).reduce<FileModel[]>(
-    (acc, current) => {
-      const currentFile = state.files[current];
+  const newFiles = Object.keys(files).reduce<FileModel[]>((acc, current) => {
+    const currentFile = files[current];
 
-      return !!model.getNode(currentFile.path)
-        ? acc
-        : [
-            ...acc,
-            new FileModel({
-              id: currentFile.path,
-              name: currentFile.name
-            })
-          ];
-    },
-    []
-  );
+    return !!model.getNode(currentFile.path)
+      ? acc
+      : [
+          ...acc,
+          new FileModel({
+            id: currentFile.path,
+            name: currentFile.name
+          })
+        ];
+  }, []);
 
   model.addAll(...newFiles);
 
-  Object.keys({ ...folders, ...state.files }).forEach(currentPath => {
+  Object.keys({ ...folders, ...files }).forEach(currentPath => {
     if (currentPath === "/") return;
     const paths = currentPath.split("/");
     paths.pop();
+
     const parent =
       paths.length === 1
         ? folders["/"]
         : folders[`/${paths.slice(1).join("/")}`];
+
     const parentNode = model.getNode(parent.path);
     const node = model.getNode(currentPath);
     const sourcePort = parentNode.getPort("out");
@@ -183,44 +187,5 @@ const layout = (state: FileSysState, engine: DiagramEngine) => {
     model.addLink(link);
   });
 
-  const g = new graphlib.Graph({
-    multigraph: true,
-    directed: true
-  });
-  g.setGraph({ rankdir: "TB", ranker: "longest-path" });
-
-  model.getNodes().forEach(node =>
-    g.setNode(node.getID(), {
-      width: node.width,
-      height: node.height
-    })
-  );
-
-  g.setDefaultEdgeLabel(() => ({}));
-
-  model.getLinks().forEach(link => {
-    if (link.getSourcePort() && link.getTargetPort()) {
-      g.setEdge({
-        v: link
-          .getSourcePort()
-          .getNode()
-          .getID(),
-        w: link
-          .getTargetPort()
-          .getNode()
-          .getID(),
-        name: link.getID()
-      });
-    }
-  });
-
-  dagreLayout(g);
-
-  g.nodes().forEach(v => {
-    const node = g.node(v);
-    model.getNode(v).setPosition(node.x, node.y);
-  });
-
-  engine.setModel(model);
-  engine.repaintCanvas();
+  layoutGraph(engine);
 };
