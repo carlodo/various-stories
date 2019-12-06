@@ -12,7 +12,6 @@ export interface FolderPortProps {}
 
 const Container = styled.div`
   position: relative;
-  pointer-events: none;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -41,7 +40,10 @@ export const Folder = ({ model, children }: FolderProps) => (
   <Container>
     {children}
     <LabelWrap>
-      <NodeLabel>{`${model.name}${model.isPWD && "*"}`}</NodeLabel>
+      <NodeLabel>
+        {model.name}
+        {model.isPWD && "*"}
+      </NodeLabel>
     </LabelWrap>
   </Container>
 );

@@ -5,10 +5,6 @@ import { NodeModel, DiagramEngine } from "@projectstorm/react-diagrams";
 
 const Node = styled.div`
   position: absolute;
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Chrome/Safari/Opera */
-  user-select: none;
-  cursor: move;
   pointer-events: all;
 `;
 
@@ -19,7 +15,7 @@ export interface NodeProps {
 
 const trans = (x: number, y: number) => `translate3d(${x}px,${y}px,0)`;
 
-export const ActualNode = ({ node, diagramEngine }) => {
+export const ActualNode = ({ node, diagramEngine }: NodeProps) => {
   const { xy } = useSpring({
     xy: [node.getX(), node.getY()]
   });

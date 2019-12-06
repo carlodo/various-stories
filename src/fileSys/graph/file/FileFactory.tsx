@@ -2,7 +2,10 @@ import * as React from "react";
 import { FileModel } from "./FileModel";
 import { DiagramEngine, PortWidget } from "@projectstorm/react-diagrams-core";
 import { File, FileBody } from "./File";
-import { AbstractReactFactory } from "@projectstorm/react-canvas-core";
+import {
+  AbstractReactFactory,
+  GenerateModelEvent
+} from "@projectstorm/react-canvas-core";
 
 export class FileFactory extends AbstractReactFactory<
   FileModel,
@@ -12,8 +15,8 @@ export class FileFactory extends AbstractReactFactory<
     super("file-node");
   }
 
-  generateModel(event: any) {
-    return new FileModel({ name: event.name });
+  generateModel(event: GenerateModelEvent) {
+    return new FileModel(event.initialConfig);
   }
 
   generateReactWidget({ model }): JSX.Element {
