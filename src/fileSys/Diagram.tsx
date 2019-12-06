@@ -4,6 +4,7 @@ import { initFileDiagramEngine } from "./initFileDiagramEngine";
 import { CanvasWidget } from "@projectstorm/react-canvas-core";
 import { Terminal } from "./Terminal";
 import { makeLearnCliBundle } from "./filesystemCLI";
+import { layoutGraph } from "../commandMe/layout";
 
 const GlobalStyle = createGlobalStyle`
   html,
@@ -40,15 +41,16 @@ const TerminalContainer = styled.div`
 const engine = initFileDiagramEngine();
 const tutorial = makeLearnCliBundle();
 tutorial.initialize(engine);
+layoutGraph(engine);
 
 export const Diagram: React.FC = () => {
-  const execute = useCallback(
-    (command: string) => tutorial.execute(command, engine),
-    []
-  );
+  const execute = useCallback((command: string) => {
+    tutorial.execute(command, engine);
+    layoutGraph(engine);
+  }, []);
 
   return (
-    <Container id="ccc">
+    <Container>
       <GlobalStyle />
       <TerminalContainer>
         <Terminal execute={execute} />

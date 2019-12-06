@@ -1,10 +1,8 @@
 import { DiagramModel, DiagramEngine } from "@projectstorm/react-diagrams";
 import { FolderModel } from "./graph/folder/FolderModel";
 import { parse } from "../utils/parser";
-import { graphlib, layout as dagreLayout } from "dagre";
 import { TerminalCommand, CLIBundle } from "../commandMe/types";
 import { FileModel } from "./graph/file/FileModel";
-import { layoutGraph } from "../commandMe/layout";
 
 export type FileSysState = {
   user: string;
@@ -94,7 +92,7 @@ export const makeLearnCliBundle = (): CLIBundle => {
   return {
     initialize: (engine: any) => {
       engine.setModel(new DiagramModel());
-      layout(state, engine);
+      updateEngine(state, engine);
     },
     execute: (command: string, engine: DiagramEngine): string | undefined => {
       const executableCommand = parse(command);
@@ -105,7 +103,7 @@ export const makeLearnCliBundle = (): CLIBundle => {
           state
         );
         state = newState;
-        layout(state, engine);
+        updateEngine(state, engine);
 
         return output;
       } else {
@@ -115,56 +113,53 @@ export const makeLearnCliBundle = (): CLIBundle => {
   };
 };
 
-const layout = (state: FileSysState, engine: DiagramEngine) => {
+const updateEngine = (state: FileSysState, engine: DiagramEngine) => {
   const { folders, files, pwd } = state;
   const model = engine.getModel();
 
-  const newFolders = Object.keys(folders).reduce<FolderModel[]>(
-    (acc, current) => {
-      const currentFolder = folders[current];
-      const currentModel = model.getNode(currentFolder.path);
-      if (!!currentModel) {
-        if (currentModel && currentModel instanceof FolderModel)
-          currentModel.setPwd(false);
-        return acc;
+  const modelIds = model.getNodes().map(nodeModel => {
+    const modelId = nodeModel.getID();
+    if (nodeModel instanceof FolderModel) {
+      if (folders[modelId]) {
+        nodeModel.setPwd(modelId === pwd);
       } else {
-        return [
-          ...acc,
-          new FolderModel({
-            id: currentFolder.path,
-            name: currentFolder.name
-          })
-        ];
+        model.removeNode(nodeModel);
       }
-    },
-    []
-  );
+    } else if (nodeModel instanceof FileModel) {
+      if (!files[modelId]) model.removeNode(nodeModel);
+    }
 
-  model.addAll(...newFolders);
+    return modelId;
+  });
 
-  const node = model.getNode(pwd);
-  if (node && node instanceof FolderModel) {
-    node.setPwd(true);
-  }
+  const newFolders = Object.keys(folders)
+    .filter(path => modelIds.indexOf(path) === -1)
+    .map(
+      path =>
+        new FolderModel({
+          id: path,
+          name: folders[path].name,
+          isPWD: path === pwd,
+          path
+        })
+    );
 
-  const newFiles = Object.keys(files).reduce<FileModel[]>((acc, current) => {
-    const currentFile = files[current];
+  const newFiles = Object.keys(files)
+    .filter(path => modelIds.indexOf(path) === -1)
+    .map(
+      path =>
+        new FileModel({
+          id: path,
+          name: files[path].name,
+          path
+        })
+    );
 
-    return !!model.getNode(currentFile.path)
-      ? acc
-      : [
-          ...acc,
-          new FileModel({
-            id: currentFile.path,
-            name: currentFile.name
-          })
-        ];
-  }, []);
-
-  model.addAll(...newFiles);
+  model.addAll(...newFolders, ...newFiles);
 
   Object.keys({ ...folders, ...files }).forEach(currentPath => {
     if (currentPath === "/") return;
+
     const paths = currentPath.split("/");
     paths.pop();
 
@@ -187,5 +182,5 @@ const layout = (state: FileSysState, engine: DiagramEngine) => {
     model.addLink(link);
   });
 
-  layoutGraph(engine);
+  engine.setModel(model);
 };

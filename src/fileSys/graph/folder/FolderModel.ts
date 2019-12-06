@@ -33,6 +33,7 @@ export class FolderModel extends NodeModel {
       type: "folder-node"
     });
     this.name = options.name;
+    this.isPWD = options.isPWD;
     this.width = 40;
     this.height = 25;
 
