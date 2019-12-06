@@ -5,7 +5,6 @@ import { theme } from "../../../theme";
 
 export interface Model {
   name: string;
-  isSelected: () => boolean;
 }
 
 export interface Props {

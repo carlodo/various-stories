@@ -31,7 +31,7 @@ const TextInput = styled.textarea`
   padding: 5px 5px 5px 0;
   overflow: hidden;
   position: absolute;
-  width: 100%;
+  width: calc(100% - 10px);
   height: 100%;
   font-size: 1.2em;
   font-family: "Anonymous Pro", monospace;
@@ -52,7 +52,7 @@ const TextWrapHelper = styled.div`
   padding-bottom: 1.5em;
   visibility: hidden;
   padding: 5px;
-  width: 100%;
+  width: calc(100% - 10px);
 `;
 
 const Dollar = styled.p`

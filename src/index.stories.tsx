@@ -13,16 +13,50 @@ import {
   Spacer
 } from "./flowDiagram/Nodes/Gateway/GatewayNode";
 import { themeDecorator } from "./themeDecorator";
-import { Folder } from "./filesys/graph/folder/Folder";
-import { File } from "./filesys/graph/file/File";
+import { Folder, FolderBody } from "./filesys/graph/folder/Folder";
+import { File, FileBody } from "./filesys/graph/file/File";
 import { Diagram as FileDiagram } from "./filesys/Diagram";
 import { diagramDecorator } from "./diagramDecorator";
 
-storiesOf("Flow diagram", module)
+storiesOf("Diagrams", module)
+  .addParameters({ options: { enableShortcuts: false } })
+  .addDecorator(diagramDecorator)
+  .add("File sysytem diagram", () => <FileDiagram />)
+  .add("Flow diagram", () => <Diagram />);
+
+storiesOf("File system diagram components", module)
+  .addParameters({ options: { enableShortcuts: false } })
   .addDecorator(themeDecorator)
-  .add("Flow Diagram", () => <Diagram />, {
-    info: { inline: false }
-  })
+  .add(
+    "Directory",
+    () => (
+      <Folder model={{ name: "home" }}>
+        <FolderBody />
+      </Folder>
+    ),
+    { info: { inline: true } }
+  )
+  .add(
+    "Working directory",
+    () => (
+      <Folder model={{ name: "home", isPWD: true }}>
+        <FolderBody isPWD />
+      </Folder>
+    ),
+    { info: { inline: true } }
+  )
+  .add(
+    "File",
+    () => (
+      <File model={{ name: "passwd" }}>
+        <FileBody />
+      </File>
+    ),
+    { info: { inline: true } }
+  );
+
+storiesOf("Flow diagram components", module)
+  .addDecorator(themeDecorator)
   .add(
     "Activity Node",
     () => (
@@ -74,23 +108,4 @@ storiesOf("Flow diagram", module)
     {
       info: { inline: true }
     }
-  );
-
-storiesOf("File system diagram", module)
-  .addParameters({ options: { enableShortcuts: false } })
-  .addDecorator(diagramDecorator)
-  .add("Diagram", () => <FileDiagram />);
-
-storiesOf("File system diagram components", module)
-  .addParameters({ options: { enableShortcuts: false } })
-  .addDecorator(themeDecorator)
-  .add(
-    "Folder",
-    () => <Folder model={{ name: "/", isSelected: () => false }} />,
-    { info: { inline: true } }
-  )
-  .add(
-    "File",
-    () => <File model={{ name: "passwd", isSelected: () => false }} />,
-    { info: { inline: true } }
   );
