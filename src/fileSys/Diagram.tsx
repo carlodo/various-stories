@@ -21,6 +21,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   background-color: ${({ theme }) => theme.global.colors.blueDeep};
+  overflow: scroll;
 `;
 
 const DiagramWidget = styled(CanvasWidget)`
@@ -28,7 +29,7 @@ const DiagramWidget = styled(CanvasWidget)`
   height: auto;
 
   /* override react-diagram defaults */
-  overflow: scroll !important;
+  overflow: visible !important;
   cursor: default !important;
 `;
 
@@ -36,6 +37,9 @@ const TerminalContainer = styled.div`
   flex: 1;
   height: 100%;
   min-width: 300px;
+  position: sticky;
+  left: 0;
+  z-index: 1;
 `;
 
 const engine = initFileDiagramEngine();
@@ -45,8 +49,10 @@ layoutGraph(engine);
 
 export const Diagram: React.FC = () => {
   const execute = useCallback((command: string) => {
-    tutorial.execute(command, engine);
+    const output = tutorial.execute(command, engine);
     layoutGraph(engine);
+
+    return output;
   }, []);
 
   return (
