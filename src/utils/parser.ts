@@ -1,5 +1,5 @@
 import parser from "yargs-parser";
-import { TerminalCommand } from "../commandMe/types";
+import { TerminalCommand } from "../cliTutorialPlatform/types";
 
 export const parse = (command: string): TerminalCommand => {
   const { _, ...rest } = parser(command);

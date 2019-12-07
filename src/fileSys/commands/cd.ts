@@ -1,5 +1,5 @@
 import { Command, FileSysState } from "../types";
-import { TerminalCommand } from "../../commandMe/types";
+import { TerminalCommand } from "../../cliTutorialPlatform/types";
 import pathlib from "path";
 
 export const cd: Command = {

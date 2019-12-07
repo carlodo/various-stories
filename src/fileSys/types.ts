@@ -1,4 +1,4 @@
-import { TerminalCommand } from "../commandMe/types";
+import { TerminalCommand } from "../cliTutorialPlatform/types";
 
 export type FileSysState = {
   user: string;

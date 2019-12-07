@@ -1,4 +1,4 @@
-import { TerminalCommand } from "../../commandMe/types";
+import { TerminalCommand } from "../../cliTutorialPlatform/types";
 import { FileSysState } from "../types";
 
 // TODO: finish this command to output files and folders from pwd

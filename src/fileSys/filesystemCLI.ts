@@ -1,7 +1,7 @@
 import { DiagramModel, DiagramEngine } from "@projectstorm/react-diagrams";
 import { FolderModel } from "./graph/folder/FolderModel";
 import { parse } from "../utils/parser";
-import { CLIBundle } from "../commandMe/types";
+import { CLIBundle } from "../cliTutorialPlatform/types";
 import { FileModel } from "./graph/file/FileModel";
 import { Command, FileSysState } from "./types";
 import { ls } from "./commands/ls";

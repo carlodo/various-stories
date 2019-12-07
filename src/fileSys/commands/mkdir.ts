@@ -1,5 +1,5 @@
 import { Command, FileSysState } from "../types";
-import { TerminalCommand } from "../../commandMe/types";
+import { TerminalCommand } from "../../cliTutorialPlatform/types";
 
 export const mkdir: Command = {
   execute: (action: TerminalCommand, state: FileSysState) => {

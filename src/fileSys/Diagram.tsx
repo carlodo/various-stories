@@ -4,7 +4,7 @@ import { initFileDiagramEngine } from "./initFileDiagramEngine";
 import { CanvasWidget } from "@projectstorm/react-canvas-core";
 import { Terminal } from "./Terminal";
 import { makeLearnCliBundle } from "./filesystemCLI";
-import { layoutGraph } from "../commandMe/layout";
+import { layoutGraph } from "../cliTutorialPlatform/layout";
 
 const GlobalStyle = createGlobalStyle`
   html,

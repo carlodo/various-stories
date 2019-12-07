@@ -3,7 +3,7 @@ import { InputType } from "@projectstorm/react-canvas-core";
 import { NodeLayerFactory2 } from "./node-layer/NodeLayerFactory";
 import { LinkLayerFactory } from "./link-layer/LinkLayerFactory";
 import { NewLinkFactory } from "./link-layer/NewLinkFactory";
-import { DefaultDiagramState } from "../commandMe/DefaultDiagramState";
+import { DefaultDiagramState } from "../cliTutorialPlatform/DefaultDiagramState";
 
 export const createEngine = () => {
   // create an instance of the engine with all the defaults
