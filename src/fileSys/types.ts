@@ -1,4 +1,4 @@
-import { TerminalCommand } from "../cliTutorialPlatform/types";
+import { TerminalCommand, TerminalEngine } from "../cliTutorialPlatform/types";
 
 export type FileSysState = {
   user: string;
@@ -11,6 +11,7 @@ export type Command = {
   description?: string;
   execute: (
     command: TerminalCommand,
-    state: FileSysState
-  ) => { state: FileSysState; output?: string };
+    state: FileSysState,
+    terminalEngine: TerminalEngine
+  ) => FileSysState;
 };

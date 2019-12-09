@@ -1,22 +1,27 @@
 import { Command, FileSysState } from "../types";
-import { TerminalCommand } from "../../cliTutorialPlatform/types";
+import {
+  TerminalCommand,
+  TerminalEngine
+} from "../../cliTutorialPlatform/types";
 import pathlib from "path";
 
 export const cd: Command = {
-  execute: (action: TerminalCommand, state: FileSysState) => {
+  description: 'cd (change directory)\nex: "cd /etc"',
+  execute: (
+    action: TerminalCommand,
+    state: FileSysState,
+    terminalEngine: TerminalEngine
+  ) => {
     const directory = action.commands[1];
     const path = calculatePath(directory, state);
-    if (!state.folders[path])
-      return {
-        state,
-        output: `${directory}: No such directory`
-      };
+    if (!state.folders[path]) {
+      terminalEngine.stdOut(`${directory}: No such directory`);
+      return state;
+    }
 
     return {
-      state: {
-        ...state,
-        pwd: path
-      }
+      ...state,
+      pwd: path
     };
   }
 };

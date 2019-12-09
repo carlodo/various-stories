@@ -15,7 +15,7 @@ import {
 import { themeDecorator } from "./themeDecorator";
 import { Folder, FolderBody } from "./filesys/graph/folder/Folder";
 import { File, FileBody } from "./filesys/graph/file/File";
-import { Diagram as FileDiagram } from "./filesys/Diagram";
+import { FileDiagram } from "./filesys/FileDiagram";
 import { diagramDecorator } from "./diagramDecorator";
 
 storiesOf("Diagrams", module)

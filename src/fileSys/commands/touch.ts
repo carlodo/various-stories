@@ -1,18 +1,29 @@
 import { Command, FileSysState } from "../types";
 import { TerminalCommand } from "../../cliTutorialPlatform/types";
+import {
+  pathLast,
+  isDirectory,
+  parentDirectory,
+  resolvePath
+} from "./directoryUtils";
 
 export const touch: Command = {
-  execute: (action: TerminalCommand, state: FileSysState) => {
-    const name = action.commands[1];
-    const path = `${state.pwd}/${name}`;
+  description: 'touch (create file) ex: "touch new_file"',
+  execute: (action: TerminalCommand, state: FileSysState, termnalEngine) => {
+    const path = action.commands[1];
+    const resolvedPath = resolvePath(state, path);
+    const fileName = pathLast(state, path);
+    const parent = parentDirectory(state, path);
+    if (!isDirectory(state, parent)) {
+      termnalEngine.stdOut(`${parent} no such directory`);
+      return state;
+    }
 
     return {
-      state: {
-        ...state,
-        files: {
-          ...state.files,
-          [path]: { name, path }
-        }
+      ...state,
+      files: {
+        ...state.files,
+        [resolvedPath]: { name: fileName, path: resolvedPath }
       }
     };
   }

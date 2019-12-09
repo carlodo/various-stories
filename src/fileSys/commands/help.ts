@@ -1,25 +1,28 @@
-import { TerminalCommand } from "../../cliTutorialPlatform/types";
+import {
+  TerminalCommand,
+  TerminalEngine
+} from "../../cliTutorialPlatform/types";
 import { FileSysState } from "../types";
+import { cd } from "./cd";
+import { touch } from "./touch";
+import { pwd } from "./pwd";
+import { mkdir } from "./mkdir";
+import { clear } from "./clear";
 
-// TODO: finish this command to output files and folders from pwd
+const commandDescriptions = [cd, mkdir, pwd, touch, clear]
+  .map(cmd => cmd.description)
+  .join("\n\n");
+
 export const help = {
-  execute: (_action: TerminalCommand, state: FileSysState) => ({
-    state,
-    output: `
-    supported commands are:
+  execute: (
+    _action: TerminalCommand,
+    state: FileSysState,
+    terminalEngine: TerminalEngine
+  ) => {
+    terminalEngine.stdOut(
+      `supported commands are:\n\n${commandDescriptions}\n\nhelp (shows this menu)`
+    );
 
-        cd (change directory)
-        ex: "cd /etc"
-        
-        mkdir (make directory)
-        ex: "mkdir new_folder"
-        
-        pwd (print working directory)
-        
-        touch (create file)
-        ex: "touch new_file"
-
-        help (shows this menu)
-    `
-  })
+    return state;
+  }
 };

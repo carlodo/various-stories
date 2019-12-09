@@ -1,7 +1,7 @@
-import { DiagramModel, DiagramEngine } from "@projectstorm/react-diagrams";
+import { DiagramEngine } from "@projectstorm/react-diagrams";
 import { FolderModel } from "./graph/folder/FolderModel";
 import { parse } from "../utils/parser";
-import { CLIBundle } from "../cliTutorialPlatform/types";
+import { CLIBundle, TerminalEngine } from "../cliTutorialPlatform/types";
 import { FileModel } from "./graph/file/FileModel";
 import { Command, FileSysState } from "./types";
 import { ls } from "./commands/ls";
@@ -10,6 +10,10 @@ import { pwd } from "./commands/pwd";
 import { touch } from "./commands/touch";
 import { cd } from "./commands/cd";
 import { help } from "./commands/help";
+import { clear } from "./commands/clear";
+import { intro, introMessage } from "./commands/intro";
+import { FileFactory } from "./graph/file/FileFactory";
+import { FolderFactory } from "./graph/folder/FolderFactory";
 
 export type Commands = { [key: string]: Command };
 
@@ -19,7 +23,9 @@ const commands: { [key: string]: Command } = {
   pwd,
   touch,
   cd,
-  help
+  help,
+  clear,
+  intro
 };
 
 const initialState: FileSysState = {
@@ -43,30 +49,42 @@ export const makeLearnCliBundle = (): CLIBundle => {
   let state = initialState;
 
   return {
-    initialize: (engine: any) => {
-      engine.setModel(new DiagramModel());
-      updateEngine(state, engine);
+    initialize: (
+      diagramEngine: DiagramEngine,
+      terminalEngine: TerminalEngine
+    ) => {
+      diagramEngine.getNodeFactories().registerFactory(new FileFactory());
+      diagramEngine.getNodeFactories().registerFactory(new FolderFactory());
+
+      terminalEngine.stdOut(introMessage);
+
+      layoutGraph(state, diagramEngine);
     },
-    execute: (command: string, engine: DiagramEngine): string | undefined => {
+    execute: (
+      command: string,
+      diagramEngine: DiagramEngine,
+      terminalEngine: TerminalEngine
+    ): void => {
       const executableCommand = parse(command);
       if (commands[executableCommand.mainCommand]) {
         const supportedCommand = executableCommand.mainCommand as keyof Commands;
-        const { state: newState, output } = commands[supportedCommand].execute(
+        const newState = commands[supportedCommand].execute(
           executableCommand,
-          state
+          state,
+          terminalEngine
         );
         state = newState;
-        updateEngine(state, engine);
-
-        return output;
+        layoutGraph(state, diagramEngine);
       } else {
-        return `Sorry, command "${executableCommand.mainCommand}" is not supported`;
+        terminalEngine.stdOut(
+          `Sorry, command "${executableCommand.mainCommand}" is not supported`
+        );
       }
     }
   };
 };
 
-const updateEngine = (state: FileSysState, engine: DiagramEngine) => {
+const layoutGraph = (state: FileSysState, engine: DiagramEngine) => {
   const { folders, files, pwd } = state;
   const model = engine.getModel();
 

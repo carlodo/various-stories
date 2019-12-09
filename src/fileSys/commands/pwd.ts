@@ -1,9 +1,17 @@
-import { TerminalCommand } from "../../cliTutorialPlatform/types";
+import {
+  TerminalCommand,
+  TerminalEngine
+} from "../../cliTutorialPlatform/types";
 import { FileSysState } from "../types";
 
 export const pwd = {
-  execute: (_action: TerminalCommand, state: FileSysState) => ({
-    state,
-    output: state.pwd
-  })
+  description: "pwd (print working directory)",
+  execute: (
+    _action: TerminalCommand,
+    state: FileSysState,
+    terminalEngine: TerminalEngine
+  ) => {
+    terminalEngine.stdOut(state.pwd);
+    return state;
+  }
 };
