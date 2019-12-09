@@ -2,7 +2,7 @@ import {
   TerminalCommand,
   TerminalEngine
 } from "../../cliTutorialPlatform/types";
-import { FileSysState } from "../types";
+import { FileSysTutorialState } from "../types";
 import { cd } from "./cd";
 import { touch } from "./touch";
 import { pwd } from "./pwd";
@@ -16,7 +16,7 @@ const commandDescriptions = [cd, mkdir, pwd, touch, clear]
 export const help = {
   execute: (
     _action: TerminalCommand,
-    state: FileSysState,
+    state: FileSysTutorialState,
     terminalEngine: TerminalEngine
   ) => {
     terminalEngine.stdOut(

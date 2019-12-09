@@ -1,4 +1,4 @@
-import { Command, FileSysState } from "../types";
+import { Command, FileSysTutorialState } from "../types";
 import { TerminalCommand } from "../../cliTutorialPlatform/types";
 import {
   isDirectory,
@@ -9,7 +9,11 @@ import {
 
 export const mkdir: Command = {
   description: 'mkdir (make directory)\nex: "mkdir new_folder"',
-  execute: (action: TerminalCommand, state: FileSysState, terminalEngine) => {
+  execute: (
+    action: TerminalCommand,
+    state: FileSysTutorialState,
+    terminalEngine
+  ) => {
     const newFolders = action.commands.slice(1, action.commands.length).reduce(
       (folders, path) => {
         const resolvedPath = resolvePath(state, path);

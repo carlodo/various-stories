@@ -1,4 +1,4 @@
-import { Command, FileSysState } from "../types";
+import { Command, FileSysTutorialState } from "../types";
 import { TerminalCommand } from "../../cliTutorialPlatform/types";
 import {
   pathLast,
@@ -9,7 +9,11 @@ import {
 
 export const touch: Command = {
   description: 'touch (create file) ex: "touch new_file"',
-  execute: (action: TerminalCommand, state: FileSysState, termnalEngine) => {
+  execute: (
+    action: TerminalCommand,
+    state: FileSysTutorialState,
+    termnalEngine
+  ) => {
     const path = action.commands[1];
     const resolvedPath = resolvePath(state, path);
     const fileName = pathLast(state, path);

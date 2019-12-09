@@ -7,11 +7,28 @@ export type FileSysState = {
   files: { [key: string]: { name: string; path: string } };
 };
 
+export type ChallangeState = {
+  tut: {
+    outro: string;
+    optedIn: boolean;
+    activeChallange: number;
+    challanges: Challange[];
+  };
+};
+
+export type FileSysTutorialState = FileSysState & ChallangeState;
+
+export type Challange = {
+  intro: string;
+  victory: string;
+  check: (state: FileSysState) => boolean;
+};
+
 export type Command = {
   description?: string;
   execute: (
     command: TerminalCommand,
-    state: FileSysState,
+    state: FileSysTutorialState,
     terminalEngine: TerminalEngine
-  ) => FileSysState;
+  ) => FileSysTutorialState;
 };

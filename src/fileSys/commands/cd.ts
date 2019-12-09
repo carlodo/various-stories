@@ -1,4 +1,4 @@
-import { Command, FileSysState } from "../types";
+import { Command, FileSysTutorialState } from "../types";
 import {
   TerminalCommand,
   TerminalEngine
@@ -9,7 +9,7 @@ export const cd: Command = {
   description: 'cd (change directory)\nex: "cd /etc"',
   execute: (
     action: TerminalCommand,
-    state: FileSysState,
+    state: FileSysTutorialState,
     terminalEngine: TerminalEngine
   ) => {
     const directory = action.commands[1];
@@ -26,7 +26,7 @@ export const cd: Command = {
   }
 };
 
-const calculatePath = (path: string, state: FileSysState) => {
+const calculatePath = (path: string, state: FileSysTutorialState) => {
   if (!path) return `/home/${state.user}`;
 
   const homeReplace = path.replace("~", `/home/${state.user}`);

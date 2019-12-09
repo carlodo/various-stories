@@ -3,7 +3,7 @@ import { FolderModel } from "./graph/folder/FolderModel";
 import { parse } from "../utils/parser";
 import { CLIBundle, TerminalEngine } from "../cliTutorialPlatform/types";
 import { FileModel } from "./graph/file/FileModel";
-import { Command, FileSysState } from "./types";
+import { Command, FileSysState, FileSysTutorialState } from "./types";
 import { ls } from "./commands/ls";
 import { mkdir } from "./commands/mkdir";
 import { pwd } from "./commands/pwd";
@@ -11,6 +11,7 @@ import { touch } from "./commands/touch";
 import { cd } from "./commands/cd";
 import { help } from "./commands/help";
 import { clear } from "./commands/clear";
+import { tut, checkTutorialState } from "./commands/tut";
 import { intro, introMessage } from "./commands/intro";
 import { FileFactory } from "./graph/file/FileFactory";
 import { FolderFactory } from "./graph/folder/FolderFactory";
@@ -25,10 +26,11 @@ const commands: { [key: string]: Command } = {
   cd,
   help,
   clear,
-  intro
+  intro,
+  tut
 };
 
-const initialState: FileSysState = {
+const initialFileState: FileSysState = {
   user: "joe",
   pwd: "/home/joe",
   folders: {
@@ -42,6 +44,48 @@ const initialState: FileSysState = {
       name: ".bash_profile",
       path: "/home/joe/.bash_profile"
     }
+  }
+};
+
+const initialState: FileSysTutorialState = {
+  ...initialFileState,
+  tut: {
+    optedIn: false,
+    activeChallange: 0,
+    outro: `
+      This tutorial is still in development.
+      
+      If you liked the concept please let me know. Also feel free to contribute or give feedback at [GIT URL] 😉.
+    `,
+    challanges: [
+      {
+        intro: `Greetings fellow CLI user 🤗. Welcome to the file system CLI tutorial.
+
+        === CHALLANGE NO 1
+
+        In this first challange I dare you to create a folder named 'magic' in your home directory (/home/joe)
+      `,
+        victory: `🥁 HUZZAH 🥁
+
+        for next challange type 'tut next'
+      `,
+        check: state => !!state.folders["/home/joe/magic"]
+      },
+      {
+        intro: `HOHO, I wasn't expecting you'll make it this far. Prepare for my ultimate challange.
+
+        === CHALLANGE NO 2
+
+        Please create a file in /etc folder called 'ultimate-file'
+      `,
+        victory: `With the creation of this file you hear a loud 💥 in the distance.
+        it seems the ultimate file has done it's damage. Time to head back to our home planet.
+        
+        for next challange type 'tut next'
+      `,
+        check: state => !!state.files["/etc/ultimate-file"]
+      }
+    ]
   }
 };
 
@@ -73,7 +117,9 @@ export const makeLearnCliBundle = (): CLIBundle => {
           state,
           terminalEngine
         );
-        state = newState;
+
+        state = checkTutorialState(newState, terminalEngine);
+
         layoutGraph(state, diagramEngine);
       } else {
         terminalEngine.stdOut(
@@ -84,7 +130,7 @@ export const makeLearnCliBundle = (): CLIBundle => {
   };
 };
 
-const layoutGraph = (state: FileSysState, engine: DiagramEngine) => {
+const layoutGraph = (state: FileSysTutorialState, engine: DiagramEngine) => {
   const { folders, files, pwd } = state;
   const model = engine.getModel();
 
