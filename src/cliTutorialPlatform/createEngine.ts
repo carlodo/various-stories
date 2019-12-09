@@ -1,4 +1,4 @@
-import createRDEngine from "@projectstorm/react-diagrams";
+import createRDEngine, { DiagramModel } from "@projectstorm/react-diagrams";
 import { InputType } from "@projectstorm/react-canvas-core";
 import { NodeLayerFactory2 } from "./node-layer/NodeLayerFactory";
 import { LinkLayerFactory } from "./link-layer/LinkLayerFactory";
@@ -14,6 +14,7 @@ export const createEngine = () => {
   engine.getLinkFactories().registerFactory(new NewLinkFactory());
 
   engine.getStateMachine().pushState(new DefaultDiagramState());
+  engine.setModel(new DiagramModel());
 
   // Deregister the default MOUSE_WHEEL actions
   const eventBus = engine.getActionEventBus();
