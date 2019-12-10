@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import { CanvasWidget } from "@projectstorm/react-canvas-core";
-import { layoutGraph } from "../cliTutorialPlatform/layout";
+import { layoutGraph } from "./layout";
 import { TerminalContainer } from "./TerminalContainer";
 import { TerminalEngine, CLIBundle } from "./types";
 import { createEngine } from "./createEngine";

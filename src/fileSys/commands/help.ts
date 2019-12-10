@@ -1,7 +1,4 @@
-import {
-  TerminalCommand,
-  TerminalEngine
-} from "../../cliTutorialPlatform/types";
+import { TerminalCommand, TerminalEngine } from "../../cliGraphPlatform/types";
 import { FileSysTutorialState } from "../types";
 import { cd } from "./cd";
 import { touch } from "./touch";

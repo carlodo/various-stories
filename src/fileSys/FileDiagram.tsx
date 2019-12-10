@@ -1,6 +1,6 @@
 import React from "react";
 import { makeLearnCliBundle } from "./filesystemCLI";
-import { Diagram } from "../cliTutorialPlatform/Diagram";
+import { Diagram } from "../cliGraphPlatform/Diagram";
 
 const tutorial = makeLearnCliBundle();
 
