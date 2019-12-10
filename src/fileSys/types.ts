@@ -7,18 +7,18 @@ export type FileSysState = {
   files: { [key: string]: { name: string; path: string } };
 };
 
-export type ChallangeState = {
+export type ChallengeState = {
   tut: {
     outro: string;
     optedIn: boolean;
-    activeChallange: number;
-    challanges: Challange[];
+    activeChallenge: number;
+    challenges: Challenge[];
   };
 };
 
-export type FileSysTutorialState = FileSysState & ChallangeState;
+export type FileSysTutorialState = FileSysState & ChallengeState;
 
-export type Challange = {
+export type Challenge = {
   intro: string;
   victory: string;
   check: (state: FileSysState) => boolean;

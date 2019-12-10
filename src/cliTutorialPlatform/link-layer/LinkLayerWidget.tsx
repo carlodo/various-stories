@@ -12,8 +12,7 @@ export class LinkLayerWidget extends React.Component<LinkLayerWidgetProps> {
   render() {
     return (
       <>
-        {//only perform these actions when we have a diagram
-        _.map(this.props.layer.getLinks(), link => {
+        {_.map(this.props.layer.getLinks(), link => {
           return (
             <LinkWidget
               key={link.getID()}

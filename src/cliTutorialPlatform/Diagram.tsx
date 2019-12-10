@@ -25,7 +25,7 @@ const Container = styled.div`
 `;
 
 const DiagramWidget = styled(CanvasWidget)`
-  flex: 4;
+  flex: 3;
   height: auto;
 
   /* override react-diagram defaults */

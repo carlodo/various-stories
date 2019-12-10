@@ -15,7 +15,7 @@ export interface NodeProps {
 
 const trans = (x: number, y: number) => `translate3d(${x}px,${y}px,0)`;
 
-export const ActualNode = ({ node, diagramEngine }: NodeProps) => {
+export const AnimatedNode = ({ node, diagramEngine }: NodeProps) => {
   const { xy } = useSpring({
     xy: [node.getX(), node.getY()]
   });

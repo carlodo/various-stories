@@ -15,7 +15,7 @@ export const tut = {
     if (cmnds[1] === "opt" && cmnds[2] === "in")
       return optedIn(action, state, terminalEngine);
     else if (cmnds[1] === "next")
-      return nextChallange(action, state, terminalEngine);
+      return nextChallenge(action, state, terminalEngine);
     else {
       terminalEngine.stdOut(`tut ${cmnds[1]} unknown command`);
       return state;
@@ -29,10 +29,10 @@ export const checkTutorialState = (
 ): FileSysTutorialState => {
   if (!state.tut.optedIn) return state;
 
-  const activeChallange = state.tut.challanges[state.tut.activeChallange];
+  const activeChallenge = state.tut.challenges[state.tut.activeChallenge];
 
-  if (activeChallange.check(state)) {
-    terminal.stdOut(activeChallange.victory);
+  if (activeChallenge.check(state)) {
+    terminal.stdOut(activeChallenge.victory);
     return state;
   }
 
@@ -44,7 +44,7 @@ const optedIn = (
   state: FileSysTutorialState,
   terminal: TerminalEngine
 ) => {
-  terminal.stdOut(state.tut.challanges[state.tut.activeChallange].intro);
+  terminal.stdOut(state.tut.challenges[state.tut.activeChallenge].intro);
   return {
     ...state,
     tut: {
@@ -54,7 +54,7 @@ const optedIn = (
   };
 };
 
-const nextChallange = (
+const nextChallenge = (
   _action: TerminalCommand,
   state: FileSysTutorialState,
   terminal: TerminalEngine
@@ -66,15 +66,15 @@ const nextChallange = (
     return state;
   }
 
-  const activeChallange = state.tut.activeChallange + 1;
-  if (state.tut.challanges[activeChallange]) {
-    terminal.stdOut(state.tut.challanges[activeChallange].intro);
+  const activeChallenge = state.tut.activeChallenge + 1;
+  if (state.tut.challenges[activeChallenge]) {
+    terminal.stdOut(state.tut.challenges[activeChallenge].intro);
 
     return {
       ...state,
       tut: {
         ...state.tut,
-        activeChallange
+        activeChallenge
       }
     };
   } else {
@@ -84,7 +84,7 @@ const nextChallange = (
       ...state,
       tut: {
         ...state.tut,
-        activeChallange: 1,
+        activeChallenge: 1,
         optedIn: false
       }
     };
