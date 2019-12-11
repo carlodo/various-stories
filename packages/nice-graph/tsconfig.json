@@ -1,0 +1,21 @@
+{
+  "include": ["src"],
+  "exclude": ["node_modules", "**/*.spec.ts", "./lib"],
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "suppressExcessPropertyErrors": true,
+    "declaration": true,
+    "outDir": "lib",
+    "strictNullChecks": false,
+    "sourceMap": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "jsx": "react",
+    "esModuleInterop": true,
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "lib": ["dom", "dom.iterable", "esnext"]
+  }
+}

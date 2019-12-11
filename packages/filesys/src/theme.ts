@@ -25,11 +25,6 @@ export const theme = {
       file: "#fff56f",
       fileBack: "#dcd35e",
       orange: "#efab7b"
-    },
-    table: {
-      footer: {
-        border: null
-      }
     }
   }
 };

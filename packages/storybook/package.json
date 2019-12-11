@@ -1,0 +1,21 @@
+{
+  "name": "storybook",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "David Sljukic",
+  "license": "MIT",
+  "scripts": {
+    "storybook": "start-storybook"
+  },
+  "devDependencies": {
+    "lerna": "^3.19.0",
+    "@babel/core": "^7.7.2",
+    "@storybook/addon-info": "^5.2.6",
+    "@storybook/react": "^5.2.6",
+    "babel-loader": "^8.0.6",
+    "react-docgen-typescript-loader": "^3.5.0"
+  },
+  "dependencies": {
+    "@sljk/filesys": "*"
+  }
+}
