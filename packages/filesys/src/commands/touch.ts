@@ -6,6 +6,7 @@ import {
   parentDirectory,
   resolvePath
 } from "./directoryUtils";
+import { left } from "fp-ts/lib/Either";
 
 export const touch: Command = {
   description: 'touch (create file) ex: "touch new_file"',
@@ -14,23 +15,11 @@ export const touch: Command = {
     state: FileSysTutorialState,
     termnalEngine
   ) => {
-    const path = action.commands[1];
-    const resolvedPath = resolvePath(state, path);
-    const fileName = pathLast(state, path);
-    const parent = parentDirectory(state, path);
-    if (parent === false || resolvedPath === false || fileName === false)
-      return state;
-    if (!isDirectory(state, parent)) {
-      termnalEngine.stdOut(`${parent} no such directory`);
-      return state;
-    }
+    // const path = action.commands[1];
+    // const resolvedPath = resolvePath(state, path);
+    // const fileName = pathLast(state, path);
+    // const parent = parentDirectory(state, path);
 
-    return {
-      ...state,
-      files: {
-        ...state.files,
-        [resolvedPath]: { name: fileName, path: resolvedPath }
-      }
-    };
+    return left(new Error("Not implemented yet"));
   }
 };

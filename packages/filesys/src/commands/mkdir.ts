@@ -1,11 +1,14 @@
-import { Command, FileSysTutorialState } from "../types";
+import { Command, FileSysTutorialState, Folders, Folder } from "../types";
 import { TerminalCommand } from "@sljk/nice-graph";
 import {
   isDirectory,
   resolvePath,
   pathLast,
-  parentDirectory
+  parentDirectory,
+  isFile
 } from "./directoryUtils";
+import { Either, left, right, chain, fold } from "fp-ts/lib/Either";
+import { pipe } from "fp-ts/lib/pipeable";
 
 export const mkdir: Command = {
   description: 'mkdir (make directory)\nex: "mkdir new_folder"',
@@ -13,41 +16,59 @@ export const mkdir: Command = {
     action: TerminalCommand,
     state: FileSysTutorialState,
     terminalEngine
-  ) => {
-    const newFolders = action.commands.slice(1, action.commands.length).reduce(
-      (folders, path) => {
-        const resolvedPath = resolvePath(state, path);
-        if (resolvedPath === false) return folders;
+  ): Either<Error, FileSysTutorialState> => {
+    if (action.commands.length < 2) return left(new Error("Need folder names"));
 
-        if (state.files[resolvedPath] || folders[resolvedPath]) {
-          terminalEngine.stdOut(
-            `${resolvedPath}: File or folder already exists`
-          );
-          return folders;
-        }
-
-        const parentDir = parentDirectory(state, path);
-        const name = pathLast(state, path);
-
-        // TODO: refactor these use Either type class
-        if (parentDir === false || name === false) return folders;
-
-        if (!isDirectory(state, parentDir)) {
-          terminalEngine.stdOut(`${parentDir} no such directory`);
-          return folders;
-        }
-
-        return {
-          ...folders,
-          [resolvedPath]: { name: name, path: resolvedPath }
-        };
-      },
-      { ...state.folders }
+    const newFolderResults = createNewFolders(
+      state,
+      action.commands.slice(1, action.commands.length)
     );
 
-    return {
+    const { newFolders } = newFolderResults.reduce<{ newFolders: Folders }>(
+      (acc, newFolder) =>
+        fold<Error, Folder, { newFolders: Folders }>(
+          error => {
+            terminalEngine.stdOut(error.message);
+            return acc;
+          },
+          ({ name, path }) => {
+            acc.newFolders[path] = { name, path };
+            return acc;
+          }
+        )(newFolder),
+      { newFolders: state.folders }
+    );
+
+    return right({
       ...state,
       folders: newFolders
-    };
+    });
   }
 };
+
+const alreadyExistsCheck = (
+  path: string,
+  state: FileSysTutorialState
+): Either<Error, string> =>
+  isDirectory(state, path) || isFile(state, path)
+    ? left(new Error(`${path}: File or folder already exists`))
+    : right(path);
+
+const directoryExists = (path: string, state: FileSysTutorialState) =>
+  isDirectory(state, path)
+    ? right(path)
+    : left(new Error(`${path} no such directory`));
+
+const createNewFolders = (state: FileSysTutorialState, folderPaths: string[]) =>
+  folderPaths.map(fp =>
+    pipe(resolvePath(state, fp), chain(createNewFolder(state)))
+  );
+
+const createNewFolder = (state: FileSysTutorialState) => (path: string) =>
+  pipe(
+    alreadyExistsCheck(path, state),
+    chain(existingPath => parentDirectory(state, existingPath)),
+    chain(parentDirectory => directoryExists(parentDirectory, state)),
+    chain(() => pathLast(state, path)),
+    chain(name => right({ name, path }))
+  );

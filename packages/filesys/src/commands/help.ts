@@ -1,16 +1,17 @@
 import { TerminalCommand, TerminalEngine } from "@sljk/nice-graph";
-import { FileSysTutorialState } from "../types";
+import { FileSysTutorialState, Command } from "../types";
 import { cd } from "./cd";
 import { touch } from "./touch";
 import { pwd } from "./pwd";
 import { mkdir } from "./mkdir";
 import { clear } from "./clear";
+import { either } from "fp-ts";
 
 const commandDescriptions = [cd, mkdir, pwd, touch, clear]
   .map(cmd => cmd.description)
   .join("\n\n");
 
-export const help = {
+export const help: Command = {
   execute: (
     _action: TerminalCommand,
     state: FileSysTutorialState,
@@ -20,6 +21,6 @@ export const help = {
       `supported commands are:\n\n${commandDescriptions}\n\nhelp (shows this menu)`
     );
 
-    return state;
+    return either.right(state);
   }
 };

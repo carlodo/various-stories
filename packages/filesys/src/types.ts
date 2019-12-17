@@ -1,4 +1,5 @@
 import { TerminalCommand, TerminalEngine } from "@sljk/nice-graph";
+import { either as E } from "fp-ts";
 
 export type FileSysState = {
   user: string;
@@ -6,6 +7,9 @@ export type FileSysState = {
   folders: { [key: string]: { name: string; path: string } };
   files: { [key: string]: { name: string; path: string } };
 };
+
+export type Folder = { name: string; path: string };
+export type Folders = { [key: string]: Folder };
 
 export type ChallengeState = {
   tut: {
@@ -30,5 +34,7 @@ export type Command = {
     command: TerminalCommand,
     state: FileSysTutorialState,
     terminalEngine: TerminalEngine
-  ) => FileSysTutorialState;
+  ) => E.Either<Error, FileSysTutorialState>;
 };
+
+export type Path = string;

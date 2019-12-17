@@ -5516,6 +5516,11 @@ forwarded@~0.1.2:
   resolved "https://registry.yarnpkg.com/forwarded/-/forwarded-0.1.2.tgz#98c23dab1175657b8c0573e8ceccd91b0ff18c84"
   integrity sha1-mMI9qxF1ZXuMBXPozszZGw/xjIQ=
 
+fp-ts@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.3.0.tgz#413c83752c3703b2b7ce5a727ad0cfb6d165ef52"
+  integrity sha512-Sfwvnsg2VHIdc/bwrFR9ym2QyZz7HZICBL2CWNRqDm7Alflf0oXIIL4nP7L75y2b+so0uupx1/nOPEBYJTxWQw==
+
 fraction.js@4.0.12:
   version "4.0.12"
   resolved "https://registry.yarnpkg.com/fraction.js/-/fraction.js-4.0.12.tgz#0526d47c65a5fb4854df78bc77f7bec708d7b8c3"

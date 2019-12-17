@@ -1,6 +1,7 @@
 import { Command, FileSysTutorialState } from "../types";
 import { TerminalCommand, TerminalEngine } from "@sljk/nice-graph";
 import pathlib from "path";
+import { either as E } from "fp-ts";
 
 export const cd: Command = {
   description: 'cd (change directory)\nex: "cd /etc"',
@@ -8,18 +9,18 @@ export const cd: Command = {
     action: TerminalCommand,
     state: FileSysTutorialState,
     terminalEngine: TerminalEngine
-  ) => {
+  ): E.Either<Error, FileSysTutorialState> => {
     const directory = action.commands[1];
     const path = calculatePath(directory, state);
     if (!state.folders[path]) {
       terminalEngine.stdOut(`${directory}: No such directory`);
-      return state;
+      return E.left(Error(`${directory}: No such directory`));
     }
 
-    return {
+    return E.right({
       ...state,
       pwd: path
-    };
+    });
   }
 };
 

@@ -14,19 +14,18 @@ import { tut, checkTutorialState } from "./commands/tut";
 import { intro, introMessage } from "./commands/intro";
 import { FileFactory } from "./graph/file/FileFactory";
 import { FolderFactory } from "./graph/folder/FolderFactory";
+import { fold } from "fp-ts/lib/Either";
 
 export type Commands = { [key: string]: Command };
 
 const commands: { [key: string]: Command } = {
   ls,
   mkdir,
-  pwd,
   touch,
   cd,
   help,
   clear,
-  intro,
-  tut
+  intro
 };
 
 const initialFileState: FileSysState = {
@@ -117,9 +116,13 @@ export const makeLearnCliBundle = (): CLIBundle => {
           terminalEngine
         );
 
-        state = checkTutorialState(newState, terminalEngine);
-
-        layoutGraph(state, diagramEngine);
+        fold(
+          (e: Error) => terminalEngine.stdOut(e.message),
+          (newState: FileSysTutorialState) => {
+            checkTutorialState(newState, terminalEngine);
+            layoutGraph(state, diagramEngine);
+          }
+        )(newState);
       } else {
         terminalEngine.stdOut(
           `Sorry, command "${executableCommand.mainCommand}" is not supported`

@@ -1,7 +1,8 @@
 import { TerminalCommand, TerminalEngine } from "@sljk/nice-graph";
-import { FileSysTutorialState } from "../types";
+import { FileSysTutorialState, Command } from "../types";
+import { either } from "fp-ts";
 
-export const clear = {
+export const clear: Command = {
   description: "clear (clear the terminal)",
   execute: (
     _action: TerminalCommand,
@@ -9,6 +10,6 @@ export const clear = {
     terminalEngine: TerminalEngine
   ) => {
     terminalEngine.clearStdOut();
-    return state;
+    return either.right(state);
   }
 };

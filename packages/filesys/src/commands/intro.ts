@@ -1,5 +1,6 @@
 import { TerminalCommand, TerminalEngine } from "@sljk/nice-graph";
 import { FileSysTutorialState, Command } from "../types";
+import { either } from "fp-ts";
 
 export const introMessage = `Hello,
 
@@ -18,6 +19,6 @@ export const intro: Command = {
   ) => {
     terminalEngine.stdOut(introMessage);
 
-    return state;
+    return either.right(state);
   }
 };

@@ -1,5 +1,6 @@
 import { TerminalCommand, TerminalEngine } from "@sljk/nice-graph";
 import { FileSysTutorialState } from "../types";
+import { either } from "fp-ts";
 
 // TODO: finish this command to output files and folders from pwd
 export const ls = {
@@ -9,6 +10,6 @@ export const ls = {
     terminalEngine: TerminalEngine
   ) => {
     terminalEngine.stdOut("ls command wip");
-    return state;
+    return either.right(state);
   }
 };
