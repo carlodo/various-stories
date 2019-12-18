@@ -1,11 +1,11 @@
 import React from "react";
-import { makeLearnCliBundle } from "./filesystemCLI";
+import { makeFilesysCliBundle } from "./filesystemCLI";
 import { Diagram } from "@sljk/nice-graph";
 
-const tutorial = makeLearnCliBundle();
+const filesysCliBundle = makeFilesysCliBundle();
 
 type Props = {};
 
 export const FileDiagram: React.FC<Props> = () => {
-  return <Diagram cliBundle={tutorial} />;
+  return <Diagram cliBundle={filesysCliBundle} />;
 };

@@ -53,7 +53,7 @@ const initialState: FileSysTutorialState = {
   tut: initialTutorialState
 };
 
-export const makeLearnCliBundle = (): CLIBundle => {
+export const makeFilesysCliBundle = (): CLIBundle => {
   let state = initialState;
 
   return {
