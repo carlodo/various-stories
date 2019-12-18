@@ -25,7 +25,9 @@ const commands: { [key: string]: Command } = {
   cd,
   help,
   clear,
-  intro
+  intro,
+  tut,
+  pwd
 };
 
 const initialFileState: FileSysState = {
@@ -119,6 +121,7 @@ export const makeLearnCliBundle = (): CLIBundle => {
         fold(
           (e: Error) => terminalEngine.stdOut(e.message),
           (newState: FileSysTutorialState) => {
+            state = newState;
             checkTutorialState(newState, terminalEngine);
             layoutGraph(state, diagramEngine);
           }

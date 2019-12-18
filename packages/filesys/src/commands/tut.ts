@@ -1,21 +1,21 @@
 import { TerminalCommand, TerminalEngine } from "@sljk/nice-graph";
 import { FileSysTutorialState } from "../types";
+import { right, Either } from "fp-ts/lib/Either";
 
-// TODO: finish this command to output files and folders from pwd
 export const tut = {
   execute: (
     action: TerminalCommand,
     state: FileSysTutorialState,
     terminalEngine: TerminalEngine
-  ): FileSysTutorialState => {
+  ): Either<Error, FileSysTutorialState> => {
     const cmnds = action.commands;
     if (cmnds[1] === "opt" && cmnds[2] === "in")
-      return optedIn(action, state, terminalEngine);
+      return right(optedIn(action, state, terminalEngine));
     else if (cmnds[1] === "next")
-      return nextChallenge(action, state, terminalEngine);
+      return right(nextChallenge(action, state, terminalEngine));
     else {
       terminalEngine.stdOut(`tut ${cmnds[1]} unknown command`);
-      return state;
+      return right(state);
     }
   }
 };

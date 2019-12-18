@@ -1,5 +1,6 @@
 import { TerminalCommand, TerminalEngine } from "@sljk/nice-graph";
 import { FileSysTutorialState } from "../types";
+import { right } from "fp-ts/lib/Either";
 
 export const pwd = {
   description: "pwd (print working directory)",
@@ -9,6 +10,6 @@ export const pwd = {
     terminalEngine: TerminalEngine
   ) => {
     terminalEngine.stdOut(state.pwd);
-    return state;
+    return right(state);
   }
 };
