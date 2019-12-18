@@ -11,6 +11,11 @@ export type FileSysState = {
 export type Folder = { name: string; path: string };
 export type Folders = { [key: string]: Folder };
 
+export type File = { name: string; path: string };
+export type Files = { [key: string]: Folder };
+
+export type NodeType = "file" | "folder";
+
 export type ChallengeState = {
   tut: {
     outro: string;
