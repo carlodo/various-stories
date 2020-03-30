@@ -1,7 +1,7 @@
 # Storybook stories of various react components
 
 ```
-git clone git@github.com:sljuka/various-stories.git
+git clone git@github.com:imasterit/various-stories.git
 cd various-stories
 yarn
 yarn storybook
